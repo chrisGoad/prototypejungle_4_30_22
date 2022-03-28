@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<title>Kingdom of Pattern</title>
+
+<style>
+	.theGrid {
+		display:grid;
+		padding-top:10px;
+		grid-template-columns:1fr 2fr 1fr;
+	}
+	.centered {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.prevNext {
+	  font-size:22pt;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor:pointer;
+	}
+	.topLink {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor:pointer;
+		text-decoration:underline;
+		padding-top:20px;
+	}
+	
+</style>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body style="color:white;font-size:14pt;font-family:arial;background-color:black" >
+<script>
+//let imKind = 'v';
+//let pagesFile = "thePages.js";
+</script>
+<script src = "pageSupport.js"></script>
+<script src = "gPages.js"></script>
+<script src = "gTitles.js"></script>
+<script src = "vPages.js"></script>
+<script src = "vTitles.js"></script>
+<script src = "hPages.js"></script>
+<script src = "hTitles.js"></script>
+<script src = "hnfPages.js"></script>
+<script src = "hnfTitles.js"></script>
+<script src = "altPages.js"></script>
+<script src = "altTitles.js"></script>
+
+<script src = "sqPages.js"></script>
+<script src = "sqTitles.js"></script>
+
+<div class="theGrid">
+  <div></div>
+  <div id = "titleDiv" class="centered">
+	</div>
+</div>
+<div id="imageDiv" class="theGrid">
+  <div id="prevDiv"  class="prevNext">&lt;</div>
+  <div class="centered">
+	  <img id="theImage"  alt="Missing Image"/>
+	</div>
+	<div id="nextDiv" class="prevNext">&gt;</div>
+
+</div>
+<div id="videoDiv" class="theGrid">
+  <div></div>
+  <div class="centered">
+	  <video controls id="theVideo">
+      <source  type="video/mp4">
+		</video>
+	</div>
+</div>
+<div id="top" class="theGrid">
+	<div></div>
+	<div  id="topDiv" class="topLink">Top</div>
+</div>
+</body>
+</html>

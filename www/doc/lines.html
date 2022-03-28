@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Diagramming basedd on an open repository of prototype structures.">
+<title>PrototypeJungle</title>
+<link rel="stylesheet" type="text/css"  href="style.css"/>
+<link rel="stylesheet" type="text/css"  href="spectrum.css"/>
+<link rel="icon" href="/images/favicon.ico" />
+
+<style>
+	.theGrid {
+		display:grid;
+		padding-top:10px;
+		grid-template-columns:1fr 4fr 1fr;
+	}
+  .indent {
+		padding-left:20px;
+	}
+  .codeVar {
+		font-style:italic;
+	}  
+  
+  .textVar {
+		font-weight:bold;
+    font-size:12pt
+	}
+</style>
+</head>
+<body style="background-color:white;font-size:14pt"> 
+<div class="theGrid">
+<div></div>
+<div>
+
+<p> This module will be introduced via annotated code, which generates the image</p>
+ <p><img  src="/doc/lines_example1.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="450" /></p>
+ <p>Here's the code:</p>
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
+
+import {rs as linePP} from '/line/line.mjs';
+import {rs as basicP} from '/generators/basics.mjs';
+import {rs as addLinesMethods} from '/mlib/lines.mjs';	
+
+let rs = basicP.instantiate();
+addLinesMethods(rs);
+rs.setName('lines_example');
+let wd = 130;
+let ht = 1.5*wd;
+let topParams = {width:wd,height:ht,numLines:3000,angleMin:-90,angleMax:90,framePadding:0.17*wd,frameStroke:"white"}
+Object.assign(rs,topParams);
+
+// If <span class="codeVar">shapePairs</span> is defined, lines are generated to run between the given pairs of shapes. 
+// They are generated randomly to meet this condition. The parameter <span class="codeVar">numLines</span>
+// specifies how many lines should be generated. The lines generated must also obey the
+// constraint specified by <span class="codeVar">angleMax</span> and <span class="codeVar">angleMin</span>
+
+rs.shapePairs = 
+[[geom.Circle.mk(Point.mk(-50,40),5),geom.LineSegment.mk(Point.mk(0,-80),Point.mk(0,80))],
+ [geom.Circle.mk(Point.mk(-50,-40),5),geom.LineSegment.mk(Point.mk(0,-80),Point.mk(0,80))],
+ [geom.LineSegment.mk(Point.mk(0,-80),Point.mk(0,80)),geom.Circle.mk(Point.mk(50,0),10),]];
+ 
+rs.initProtos = function () {
+  core.assignPrototypes(this,'lineP',linePP);
+  this.lineP.stroke = 'white';
+  this.lineP['stroke-width'] = .015; 	
+}  
+
+
+rs.initialize = function () {
+debugger;
+  core.root.backgroundColor = 'black';
+  this.addFrame();
+  this.initProtos();
+  this.initializeLines();
+}	
+export {rs};
+
+</pre>
+<p> Several of the parameters in </p>
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
+let topParams = {numRows:nr,numCols:nr,width:wd,height:wd,frameColor:'rgb(2,2,2)',pointJiggle:4,framePadding:0.15*wd,frameVisible:1};
+</pre>
+First, <span class="textVar">pointJiggle</span> , if defined and non-zero, causes two bounded grids to be setup via <em>setupRandomGridForBoundaries</em>,named xJiggle and yJiggle. Then the points in the grid are jiggled by the amounts specified in those bounded grids. The maximum amount of jiggle is given by the pointJiggle parameter. Since the grids are bounded, the amount of jiggle varies smoothly across the grid.</p>
+<p>
+Next, the frame parameters need explanation. The frame facility, which draws the white rectangle around the grid, is <a href="/doc/frame.html">documented separately</a>, since the frame facility is implemented in the basics module, not the grid module, and can be used with any of the image generation modules in prototypejungle.</p>
+
+</div>
+</div>
+</body>
+</html>
+
+
+

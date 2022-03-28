@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Diagramming basedd on an open repository of prototype structures.">
+<title>PrototypeJungle</title>
+<link rel="stylesheet" type="text/css"  href="style.css"/>
+<link rel="stylesheet" type="text/css"  href="spectrum.css"/>
+<link rel="icon" href="/images/favicon.ico" />
+</head>
+<body style="background-color:white;font-size:14pt"> <!-- from 12 6/8/19 -->
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="js/color_picker.js"></script>
+<script src="ace-builds/src-min-noconflict/ace.js"></script>  
+-->
+<script nomodule>
+        location.href = "/nomodules.html"
+</script>
+ 
+<script type="module">
+  import * as core from "/js/core-1.1.0.min.js";
+import * as geom from "/js/geom-1.1.0.min.js";
+import * as dom from "/js/dom-1.1.0.min.js";
+
+//import * as tree from "/js/tree-1.1.0.min.js";
+//import * as catalog from "/js/catalog-1.1.0.min.js";
+//import * as editor from "/js/editor-1.1.0.min.js";
+import * as draw from "/js/draw-1.1.0.min.js";
+
+
+/* make the modules available in all contexts */
+Window.core = core;Window.geom=geom;Window.dom=dom;
+//Window.graph = graph;Window.ui=ui;
+//Window.editor=editor;
+Window.draw=draw;
+//Window.catalog = catalog;
+let ui = {};
+var fcont = {};
+fcont.xxxx = {};
+ui.vars = {};
+ui.hide = () => {};
+Window.ui = ui;
+let graph = {}
+graph.installCirclePeripheryOps = () => {}
+Window.graph = graph;
+
+
+let aaaa,ctx,img,natWidth,natHeight,canvas;
+aaaa = 23;
+const drawFrame = function () {
+	ctx.clearRect(0,0,natWidth,natHeight);
+	ctx.drawImage(img,0,0,natWidth,natHeight);//,rectInImage.w,rectInImage.h,0,0,canvasRect.w,canvasRect.h);
+}
+
+const drawImage = function () {
+	let qs = core.parseQuerystring();
+	let image = qs.image;
+	if (!image) {
+	  draw.initPage();
+	  return;
+	}
+	debugger;
+	let scale  = qs.scale?Number(qs.scale):0.1;
+	let mnim = `inputImages/${image}`;
+	let imageIn = `${mnim}.jpg`;
+  //const finishUp = function () {
+		canvas = document.getElementById('inputCanvas');
+		ctx = canvas.getContext('2d');
+		//let winWd = window.innerWidth;
+		//let winHt = window.innerHeight;
+		//let wf = 0.9;
+		//canvas.width = winWd * wf;
+		//canvas.height = winHt * wf - 30;
+		img = new Image();
+		img.addEventListener('load', function () {
+		 // debugger;
+	  	natWidth = scale * (img.naturalWidth);
+		  natHeight = scale * (img.naturalHeight);
+			canvas.width = natWidth;
+			canvas.height = natHeight;
+			//let data = context.getImageData(imageX, imageY, imageWidth, imageHeight);
+			drawFrame();
+			let wd = Math.floor(natWidth);
+			let ht = Math.floor(natHeight);
+			let data = ctx.getImageData(0,0, wd,ht);
+			debugger;
+			draw.vars.imageData = data.data;
+			draw.vars.imWd = wd;
+			draw.vars.imHt = ht;
+			draw.initPage()
+
+			
+		});
+		//showingBox =1;
+		img.src = imageIn;
+	//};
+}
+ui.saveTheFrame =  (n) => {
+ alert(22);// draw.saveFrame(n);
+}
+	//debugger;
+window.addEventListener("DOMContentLoaded", () => { 
+ debugger;
+  core.debugMode(true);
+  core.vars.historyEnabled = false;
+  core.vars.tlogActive = true; // controls time logging (core.tlog)
+  core.vars.activeConsoleTags = ['error','install'];//'install'];//'control'
+  core.vars.stripeInstalled = true;
+  core.vars.photoMode = true;
+  core.vars.maxSaveLength = 5000000; // this should match the limit in the storage rules for firebase
+  //core.vars.svgwd = 200;
+   //core.vars.svght = 100;
+  ui.vars.jumpToImage = 1;
+  ui.vars.whichPage = 'structure_editor';
+  ui.vars.defaultCatalog = '(sys)/catalog/global.catalog';
+  draw.vars.fitFactor = 0.8;
+  draw.vars.fitMode = true;// auto-fit items into graphics, with the given factor
+  dom.vars.stdExtent = geom.Point.mk(200,200); // if there is no initial content, this is the area in image space originally in view
+  core.tlog('doc ready');
+  //core.loadTopDefs(() => {drawImage();draw.initPage()});// binds modules to global
+  core.loadTopDefs(() => {drawImage();});// binds modules to global
+  //core.loadTopDefs(() => {drawImage()});// binds modules to global
+});
+</script>
+ 
+ 
+<div id="main" style="display:none"> 
+  <div id="topbar"> 
+   <div id="topbarOuter" style="color:black;">
+      <div id="title" style="display:inline-block">
+        <span class="mainTitle">PrototypeJunglee </span> <span style="font-size:8pt">Draw</span>
+				<div style="display:inline-block" class="button" id="runButton">Run Animation</div>
+				<div style="display:inline-block" class="button" id="resumeButton">Resume Animation</div>
+				<div style="display:inline-block" class="button" id="pauseButton">Pause</div>
+				<div style="display:inline-block" class="button" id="stepButton">Step</div>
+				<div style="display:inline-block" class="button" id="stepNoSaveButton">Step No Save</div>
+				<div style="display:inline-block" class="button" id="repeatFrameButton">Repeat Frame</div>
+				<div style="display:inline-block" class="button" id="saveAnimationButton">Save Animation</div>
+				<div style="display:inline-block" class="button" id="saveButton">Save Image</div>
+				<div style="display:inline-block" class="button" id="saveMpixButton">Save Image for Mpix</div>
+      </div>
+      <div id = "topbarInner" style="float:right"></div>
+   </div>
+
+   <div id="error"></div>
+  </div>  
+</div>
+<canvas id="inputCanvas"></canvas> 
+
+<canvas id="imageCanvas"></canvas> <!-- used for image conversions to jpeg-->
+
+
+
+
+</body>
+</html>
