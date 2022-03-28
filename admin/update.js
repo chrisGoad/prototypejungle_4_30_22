@@ -155,7 +155,7 @@ var fs = require('fs');
 //xferDir(0,'www','doc');
 xferDir('admin');
 xferDir('server');
-xferFiles('www',['draw.html','topdefs.js','style.css','spectrum.css','page.html','pageSupport.js']);
+xferFiles('www',['draw.html','topdefs.js','style.css','spectrum.css','page.html','pageSupport.js','grids.html']);
 xferFiles('admin',['genGrids.js','gridSections.js','imageOrder.js']);
 xferDirs(['www/generators','www/line','www/shape','www/mlib','www/json','www/doc']);
 return;
