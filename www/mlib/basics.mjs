@@ -65,27 +65,26 @@ item.addSignature = function() {
 	sig.setScale(vertical?vSigScale:sigScale);
 }
 
+item.numFrames = 0;
 // add a stripe around the image, to control the size of the jpg when saved
-item.addFrame = function () {
+item.addFrame = function (params) {
 	debugger;
+  let {width,height} = this;
+  let fparams = params?params:this;
 	let {frameStroke:frs,frameFill:frf,framePadding:frp,framePaddingX:frpx,framePaddingy:frpy, 
-	frameWidth,frameHeight,frameStrokeWidth:fswd, width,height,frameVisible,framePos:pos,signIt} =  this;
+	frameWidth,frameHeight,frameStrokeWidth:fswd, frameVisible,framePos:pos,signIt} =  fparams;
   let frpd = frp!==undefined;
-	if ( (!frpd) && (!frameWidth)) {
-		return;
-	}
+  if (!(frpd || frameWidth)) {
+    return;
+  }
   if (!frs) {
     frs = 'rgb(2,2,2)';
    // frs = 'white';
   }
   fswd = fswd?fswd:2;
-  let frr = this.set('brect',rectPP.instantiate());
- 
+  let frr = this.set('brect'+this.numFrames,rectPP.instantiate());
+  this.numFrames = this.numFrames + 1;
   frr.fill = frf?frf:'transparent';
-	/*if (frameVisible) {
-		frr['stroke-width'] = frameVisible;
-		frr.stroke = 'white';
-	} else {*/
 	frr.stroke = frs;
   frr['stroke-width'] = fswd;
 
@@ -96,9 +95,7 @@ item.addFrame = function () {
 		let frPx = frpx?frpx:(frpd?frp:0.1*width);
 		let frPy = frpy?frpy:(frpd?frp:0.1*height);
 		frr.width = width + frPx;
-		//frr.width = 20;
 		frr.height = height + frPy;
-		//frr.height = 10;
 	}
 	if (pos) {
     console.log('Stripe Pos',pos.x,pos.y);
@@ -110,11 +107,14 @@ item.addFrame = function () {
 
 
 item.addBackground = function () {
-	let {backgroundColor:bkc,width,height,backgroundPadding:bkp=0} =  this;
+	let {backgroundColor:bkc,backgroundPadding:bkp=0} =  this;
+	//let {backgroundColor:bkc,width,height,backgroundPadding:bkp=0} =  this;
   debugger;
 	if (!bkc) {
 		return;
 	}
+  this.addFrame({framePadding:bkp,frameFill:bkc});
+  return;
 	//core.assignPrototypes(this,'backgroundRectP',rectPP);
   this.backgroundRectP = rectPP.instantiate();
 

@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kingdom of Pattern</title>
+  <style>
+    .theGrid {
+      display:grid;
+      padding-top:10px;
+      grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+    .indent {
+      padding-left:40px;
+    }
+		.centered {
+			text-align:center;
+		  font-size:13pt;
+			display: flex;
+		  align-items: center;
+		  justify-content: center;
+		}
+		p {
+			padding-top:5px;
+			padding-bottom:5px;
+			margin-top:0px;
+			margin-bottom:0px;
+		}
+    .topPad {
+      padding-top:40px;
+    }
+    .emphasis {
+      font-style:italic;
+      font-weight:bold;
+     }
+    .introLineLarge {
+      text-align:center;
+      padding-bottom:10px;
+      padding-top:10px;
+      font-size:16pt;
+      color:white;
+    }
+     .introLineSmall {
+      text-align:center;
+      padding-bottom:5px;
+      padding-top:5px;
+      font-size:10pt;
+    }
+      
+  </style>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body style="color:white;font-size:16pt;font-family:arial;background-color:black" >
+undefined<script>
+document.addEventListener('DOMContentLoaded', () => {
+	debugger;
+	let cWidth =document.documentElement.clientWidth;
+	let imWid = Math.floor(0.09*cWidth);
+	let images = document.querySelectorAll('img');
+	images.forEach((im) => {
+		im.width = ''+imWid;
+	});
+});
+</script>	
+
+<div class="theGrid">
+  <div></div>
+  <div><p style="text-align:center"><a href="http://localhost:8081/draw.html?source=/generators/web_drift.mjs">Drift Web</a><br/>
+<a href="generators/web_drift.mjs">source</a><br/>
+<span style="font-size:10pt">  NOT POSTED drop</span><br/>
+<a style="color:white" href="page.html?image=web_drift.jpg&page=0&imKind=alt"><img width="200" src="thumbs/web_drift.jpg"></a></p></div>
+<div><p style="text-align:center"><a href="http://localhost:8081/draw.html?source=/instances/grid_grid_1_i_3_v_4.mjs">Grid 5</a><br/>
+<a href="instances/grid_grid_1_i_3_v_4.mjs">source</a><br/>
+<span style="font-size:10pt">  NOT POSTED drop</span><br/>
+<a style="color:white" href="page.html?image=grid_grid_1_i_3_v_4.jpg&page=1&imKind=alt"><img width="200" src="thumbs/grid_grid_1_i_3_v_4.jpg"></a></p></div>
+<div><p style="text-align:center"><a href="http://localhost:8081/draw.html?source=/generators/grid_decos.mjs">Deco</a><br/>
+<a href="generators/grid_decos.mjs">source</a><br/>
+<span style="font-size:10pt">  NOT POSTED drop</span><br/>
+<a style="color:white" href="page.html?image=grid_decos.jpg&page=2&imKind=alt"><img width="200" src="thumbs/grid_decos.jpg"></a></p></div>
+</div><br/>

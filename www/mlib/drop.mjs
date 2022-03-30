@@ -11,7 +11,7 @@ Let rs be the generator object. Sets of line segments (and lines) are created by
 
 rs.genSegments = function (p) {
 ...
-return [segs,lines];
+return [segs,shapes];
 }
 
 where p is a Point (the "anchor point"),   segs is an array of lineSegments, and lines an array of lines.  Elements of segs are added to the set of all segs dropped so far. As mentioned above, each time there is a new attempted drop, it is checked whether any of the new segs intersect any of those already dropped. If not, the drop succeeds, and the segs are added the already dropped array, and the lines are added to the set of lines to be displayed.  The relationship between segs and lines is up to the generator, but a typical case is where the ends of the lines are taken from the ends of the segs (so that they coincide, geometrically). A value of the form [segs:array(LineSegment),lines:array(Line)] is called a "segset" (even though lines are included as well as segs).
@@ -248,11 +248,11 @@ item.addSegmentAtThisEnd = function (end) {
     rvs = this.randomValuesAtCell(randomGridsForShapes,cell.x,cell.y);
 	}
   while (true) {
-		let segsAndLines = this.genSegments(end,rvs);
+		let segsAndShapes = this.genSegments(end,rvs);
 		let ifnd = 0;
 		let sln = 0
-		if (segsAndLines) {
-			let [segs,lines] = segsAndLines;
+		if (segsAndShapes) {
+			let [segs,shapes] = segsAndShapes;
 			sln = segs.length;
 			for (let i=0;i<sln;i++) {
 				let seg = segs[i];
@@ -274,7 +274,7 @@ item.addSegmentAtThisEnd = function (end) {
 				return 0;
 			}
 		} else {
-			this.installSegmentsAndLines(segsAndLines);
+			this.installSegmentsAndShapes(segsAndShapes);
 			return 1;  
     } 
   }
@@ -351,11 +351,11 @@ item.addSegmentsAtEnds = function () {
 item.addRandomSegment = function () {
   let p = this.genRandomPoint(); 
   //debugger;
-  let segsAndLines = this.genSegments(p);
+  let segsAndShapes = this.genSegments(p);
   let ifnd = 0;
   let sln=0;
-  if (segsAndLines) {
-    let [segs,lines] = segsAndLines;
+  if (segsAndShapes) {
+    let [segs,shapes] = segsAndShapes;
     let rect;
     sln = segs.length;
     for (let i=0;i<sln;i++) {
@@ -364,7 +364,7 @@ item.addRandomSegment = function () {
         return undefined;
       }
     }
-    this.installSegmentsAndLines(segsAndLines);
+    this.installSegmentsAndShapes(segsAndShapes);
     return true;
 
   } else {
@@ -447,52 +447,15 @@ item.addRandomSegments = function () {
 }
 
 
-/*
-item.genLine = function (lsgOrP0,p1,ext) {
-  let end0,end1;
-  if (p1) {
-    end0 = lsgOrP0;
-    end1 = p1;
-  } else {
-    end0= lsgOrP0.end0;
-    end1= lsgOrP0.end1;
-  }
-  if (ext) {
-    let vec = end1.difference(end0);
-    let nvec = vec.normalize();
-    end1 = end1.plus(nvec.times(ext));
-  }
-  let line = this.lineP.instantiate();
-	if (this.genPoint3d) {
-		let e03d = this.via3d(end0);
-		let e13d = this.via3d(end1);
-    line.setEnds(e03d,e13d);
-	} else {
-    line.setEnds(end0,end1);
-	}
-  return line;
-}
-
- 
-item.via3d = function (p) {
-	if (this.genPoint3d) {
-		let p3d = this.genPoint3d(p);
-		let rs = this.camera.project(p3d);
-		return rs;
-	}
-  return p;
-  
-}
-*/
-item.installLine = function (line) {
-	if (line.period) {
+item.installShape = function (shape) {
+	if (shape.period) {
 	  debugger;
 	}
-  this.shapes.push(line);
-  line.show();
-  line.update();
+  this.shapes.push(shape);
+  shape.show();
+  shape.update();
 	this.numDropped++;
-  return line;
+  return shape;
 }
 
 item.updateShapes = function () {
@@ -508,16 +471,17 @@ item.updateShapes = function () {
 }
 	
 	
-item.installSegmentsAndLines = function (seglines) {
+item.installSegmentsAndShapes = function (dropStruct) {
   let {segments,ends} = this;
   let ln = segments.length;
-  let [segs,lines] = seglines;
-//	if (seglines.isRectangle) {
+  let [segs,shapes] = dropStruct;
+//	if (dropStruct.isRectangle) {
 	if (!Array.isArray(segs)) {
+    debugger;
 		let rect = segs;
 		let rectShape = lines;
 		segments.push(rect);
-		this.installLine(rectShape);
+		this.installShape(rectShape);
 		return;
 	}
 
@@ -543,10 +507,10 @@ item.installSegmentsAndLines = function (seglines) {
     }
 		ln++;
   });
-  lines.forEach( (line) => this.installLine(line));
+  shapes.forEach( (shape) => this.installShape(shape));
 }
 
-item.removeSegmentsAndLines = function (n) {
+item.removeSegmentsAndShapes = function (n) {
 	let {segments,shapes} = this;
 	let ln = segments.length;
 	let sln  = shapes.length;
@@ -574,12 +538,11 @@ item.cellOf  = function (p) {
 }
 
 item.segsToSeed = function (segs) {
-  let lines = segs.map((sg) => {
+  let shapes = segs.map((sg) => {
 	  let line = this.genLine(sg);
-		//line.show();
 		return line;
 	});	
-	return [segs,lines];
+	return [segs,shapes];
 }
 
 item.concatEachArray = function (ays) {
@@ -616,11 +579,11 @@ item.initializeDrop = function (doDrop=1) {
   this.set('shapes',core.ArrayNode.mk());
   if (initialSegments) {
     let isegs = this.initialSegments();
-    this.installSegmentsAndLines(isegs);
+    this.installSegmentsAndShapes(isegs);
   }
 	if (genSeeds) {
     let isegs = this.genSeeds();
-    this.installSegmentsAndLines(isegs);
+    this.installSegmentsAndShapes(isegs);
   }
   if (doDrop) {
 		this.addRandomSegments();

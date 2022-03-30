@@ -1,7 +1,8 @@
 // Copyright 2019 Chris Goad
 // License: MIT
 
-import * as core from "/js/core-1.1.0.min.js";
+//import * as core from "/js/core-1.1.0.min.js";
+import * as core from "/js/core-1.1.0.js";
 
 let codeRoot = core.codeRoot;
 

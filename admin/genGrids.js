@@ -102,6 +102,8 @@ if (byLikes) {
   pagesVar = `${imKind}Pages`;
   titlesPath = `www/${imKind}Titles.js`;
   titlesVar = `${imKind}Titles`;
+  localsPath = `www/${imKind}Locals.js`;
+  localsVar = `${imKind}Locals`;
   
  console.log('pagesPath',pagesPath)
 let outPath;
@@ -129,6 +131,7 @@ var fs = require('fs');
 let fileExt = alternate?'mjs':'mjs';
 let thePages = [];
 let theTitles = [];
+let theLocals = []
 let pageTop = `
 <!DOCTYPE html>
 <html lang="en">
@@ -258,19 +261,29 @@ const thingString = function (order,ix,dir,useThumb,ititle,props) {
   //console.log('vpath',vpath);
   let vx = vpath+'.'+ext;
 	let imsrc = `images/${vpath}.jpg`;
-	let thumbsrc = useThumb?`thumbs/${vpath}.jpg`:imsrc;
+	//let thumbsrc = useThumb?`thumbs/${vpath}.jpg`:imsrc;
+	let thumbsrc = `thumbs/${vpath}.jpg`;
+  let localSrc =`www/thumbs/${vpath}.jpg`;
+  let localim = fs.existsSync(localSrc);
+  theLocals.push(localim?1:0);
+
+  if (!localim) {
+	  thumbsrc = `https://kingdomofpattern.com/thumbs/${vpath}.jpg`;
+  }
 //console.log('thumbsrc',thumbsrc);
 	let pageArg = 'page='+pageNumber;
   let kindArg = 'imKind='+imKind;
+  //let localArg = 'local='+(localim?1:0);
 	let theImageArg = '';
   //imageArg?'&image='+imageArg:'';
 	pageNumber++;
 	let lastPageArg = (pageNumber === numPages)?'&lastPage=1':'';
 	let rs;
+	//let astart = `<a style="color:white" href="page.html?image=${vx}&${pageArg}&${kindArg}&${localArg}">`;
 	let astart = `<a style="color:white" href="page.html?image=${vx}&${pageArg}&${kindArg}">`;
  // let likesStr = likes?`<span style="font-size:10pt">Likes ${likes} ${category}</span><br/>`:'';
   //let propsStr = `<span style="font-size:10pt">Likes ${likes?likes:'none'} Order ${order}${posted?"":" NOT POSTED"} ${category}</span><br/>`;
-  let propsStr = `<span style="font-size:10pt">${likes?'Likes '+likes:''} ${posted?"":" NOT POSTED"} ${category}</span><br/>`;
+  let propsStr = `<span style="font-size:10pt">${likes?'Likes '+likes:''} ${posted?"":" NOT POSTED"} ${localim?'Local':''} ${category}</span><br/>`;
 	if (forKOP) {
 		let titleLink = title?`${astart}${title}</a></p>`:'';
 		console.log('forKOP');
@@ -438,6 +451,12 @@ const writeTheTitles = function () {
 	fs.writeFileSync(titlesPath,js);
 //	fs.writeFileSync(alternate?'www/altTitles.js':(byKind?'www/byKindTitles.js':'www/theTitles.js'),js);
 }
+const writeTheLocals = function () {
+	let js = `let ${localsVar} = ${JSON.stringify(theLocals)};`
+   // console.log('writeTheTitles',js,titlesPath);
+	fs.writeFileSync(localsPath,js);
+}
+
 		
 const writePage = function (sections) {
 	
@@ -480,5 +499,6 @@ numPages = countPages(sectionsC.sections);
  writePage(sectionsC.sections);
  writeThePages();
  writeTheTitles();
+ writeTheLocals();
  console.log('numPages',numPages);
  

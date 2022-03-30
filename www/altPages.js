@@ -1,0 +1,1 @@
+let altPages= ["web_drift.jpg","grid_grid_1_i_3_v_4.jpg","grid_decos.jpg"];

@@ -3,8 +3,10 @@
 
 // the environment for this module
 
-import * as core from "/js/core-1.1.0.min.js";
-import * as geom from "/js/geom-1.1.0.min.js";
+//import * as core from "/js/core-1.1.0.min.js";
+import * as core from "/js/core-1.1.0.js";
+//import * as geom from "/js/geom-1.1.0.min.js";
+import * as geom from "/js/geom-1.1.0.js";
 
 const codeRoot = core.codeRoot;
 //const geomr = pjr.geom;

@@ -9,7 +9,7 @@ node admin/assemble.js <module>
 
 */
 let what = process.argv[2];
-let noMinify = Boolean(process.argv[3]);
+let noMinify = 1;// Boolean(process.argv[3]);
 console.log(noMinify);
 let versions = require("./versions.js");
 
@@ -17,7 +17,7 @@ let versions = require("./versions.js");
 let fs = require('fs');
 let zlib = require('zlib');
 //const { minify } = require("terser");    
-const { minify } = require("terser");    
+//const { minify } = require("terser");    
 //import { minify } from "terser";
 //let UglifyJS = require("uglify-js");
 //let babel = require("babel-core");
@@ -79,7 +79,8 @@ function doGzip(file,cb) {
 
 let isPublic = false;
 function fullName(f) {
-  return isPublic?`../prototypetrees/src/${f}.js`:`../prototypejungle_ui/js/${f}.js`;
+ //return `../prototypejungle/js/${f}.js`;
+  return `js/${f}.js`;
 }
 
 function getContents(fl) {
@@ -100,8 +101,8 @@ function mextract(fls) {
 
 
 function mkPath(which,version,mini) {
-  if (mini) {
-    return `www/js/${which}-${version}.min.js`;
+  if (1 ||mini) {
+    return `www/js/${which}-${version}.js`;
   } else {
     return `staging/${which}-${version}.js`;
   }

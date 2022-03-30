@@ -24,6 +24,10 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
+	}.title {
+		font-weight:bold;
+    font-size:16pt;
+    text-align:center;
 	}
 </style>
 </head>
@@ -33,7 +37,7 @@
 <div>
 
 <p> This module will be introduced via annotated code, which generates the image</p>
- <p><img  src="/doc/grid_example1.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="600" height="400" max-height="500"/></p>
+ <p><img  src="/images/drop_ice.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="600" height="400" max-height="500"/></p>
  <p>Here's the code:</p>
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
 
@@ -76,10 +80,10 @@ rs.segParams = function () {
 } 
 
 rs.genSegments = function (p) {
-  let {minSeparation:sep} = this;
+  let {minSeparation:sep,lineP} = this;
   let {length,angle} = this.segParams();
   let seg = this.genSegment(p,length,angle);
-  let ln = this.genLine(seg);
+  let ln = this.genLine(seg,lineP);
   let eseg = this.genSegment(p,length+sep,angle);
   return [[eseg],[ln]];
 }
@@ -97,7 +101,8 @@ export {rs};
 
 
 </pre>
-<p> The DROP algorithm drops sets of line segments at random positions on the canvas. If a given segment set lands on top of another, it is thrown away.     The segsets method library is used to build sets of segments. </p>
+<p> The DROP algorithm drops  things at random positions on the canvas. If a thing lands on top of another, it is thrown away.   I have used the vague word "thing". A thing is a pair [lineSegments,lines]. The lineSegments are used for detecting collisions. If a given drop does not intersect with the lineSegments already dropped, then the lines are displayed (by adding them to the shape tree).
+ The segsets method library is used to build sets of segments. </p>
 
 <p>Let rs be the generator object. Sets of line segments (and lines) are created by the method rs.genSegments. This method has the form: </p>
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">

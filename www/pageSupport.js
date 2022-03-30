@@ -31,8 +31,9 @@ const onPrev = function () {
 	
 	let dest = thePages[cPage-1];
 	  
-	
-	window.location.href = `./page.html?image=${dest}&page=${cPage-1}&imKind=${imKind}`;
+		window.location.href = `./page.html?image=${dest}&page=${cPage-1}&imKind=${imKind}&local=${imLocalS}`;
+
+	//window.location.href = `./page.html?image=${dest}&page=${cPage-1}&imKind=${imKind}`;
 }
 const onNext = function () {
   debugger;
@@ -40,7 +41,7 @@ const onNext = function () {
 	let dest = thePages[cPage+1];
 	let lastPageArg = (cPage === (thePages.length - 2))?'&lastPage=1':'';
 
-	window.location.href = `./page.html?image=${dest}&page=${cPage+1}${lastPageArg}&imKind=${imKind}`;
+	window.location.href = `./page.html?image=${dest}&page=${cPage+1}${lastPageArg}&imKind=${imKind}&local=${imLocalS}`;
 }
 
 
@@ -61,7 +62,7 @@ const onTop = function () {
 	window.location.href = './'+dst+'.html';
 }
 
-let imKind,thePages,theTitles;
+let imKind,imLocalS,thePages,theTitles,theLocals;
 document.addEventListener('DOMContentLoaded', () => {
   debugger;
 	let cWidth =document.documentElement.clientWidth;
@@ -71,9 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	let getArgs = parseQuerystring();
 	cPage = Number(getArgs.page);
   imKind = getArgs.imKind;
+  debugger;
+  imLocalS = getArgs.local;
+  //imLocal = (imLocalS==='0')?0:1;
   if (imKind === 'g') {
     thePages = gPages;
     theTitles = gTitles;
+    theLocals = gLocals;
   } else if (imKind === 'v') {
     thePages = vPages;
     theTitles = vTitles; 
@@ -92,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 	//lastPage = getArgs.lastPage;
 	let title = theTitles[cPage];
+	let imLocal = theLocals[cPage];
+  debugger;
 	let prevDiv = document.getElementById('prevDiv');
 	let nextDiv = document.getElementById('nextDiv');
 	let topDiv = document.getElementById('topDiv');
@@ -118,7 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	//imageEl.width = 0.9*cWidth;
 	let im = getArgs.image;
 	let ext = extension(im);
-	let dir = (ext==='jpg')?'images/':'videos/';
+	//let dir = (ext==='jpg')?'images/':'videos/';
+	let dir = imLocal?'images/':'https://kingdomofpattern.com/images/';
+  debugger;
+  //console.log('DIR ',dir);
 	if (ext === 'mp4') {
 	  imageDiv.style.display = 'none';
 		 videoEl.src = dir+im;
