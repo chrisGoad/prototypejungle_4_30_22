@@ -17,6 +17,9 @@
   .indent {
 		padding-left:20px;
 	}
+  .indent2 {
+		padding-left:40px;
+	}
   .codeVar {
 		font-style:italic;
 	}  
@@ -24,11 +27,34 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .plainText {
+		font-weight:normal;
+    font-size:12pt
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
 	}
+  .source {
+    font-size:16pt;
+    text-align:center;
+	}
+ .section {
+   padding-top:30px;
+		font-weight:bold;
+    font-size:15pt;
+	}
+  .blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+td {
+  borderr: 1px solid rgb(190,190,190);
+  padding-left: 20px;
+}
 </style>
 </head>
 <body style="background-color:white;font-size:14pt"> 
@@ -38,11 +64,11 @@
 
 <p class="title">Method Modules</p>
 <p>A method module is something that adds a batch of methods to an image generator. Each supports the generation of a certain sort of image. For example grid.mjs enables the construction of visual grids, such as this one,</p> 
- <p><img  src="/images/grid_2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300" max-height="500"/></p>
+ <p><img  src="/doc/grid_2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300" max-height="500"/></p>
 
 <p>and drop.mjs generates images by dropping elementary shapes onto the image at random, while avoiding collisions. Image modules can, and usually are, used together. </p>
 
- <p><img  src="/images/drop_ice.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300" max-height="500"/></p>
-<p> See the documentation for the individual method modules for numerous examples.
+ <p><img  src="/doc/drop_ice.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300" max-height="500"/></p>
+<p> The modules are described one by one in the following sections of this document.</p>
 </body>
 </html>

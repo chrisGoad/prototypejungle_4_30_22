@@ -17,6 +17,9 @@
   .indent {
 		padding-left:20px;
 	}
+  .indent2 {
+		padding-left:40px;
+	}
   .codeVar {
 		font-style:italic;
 	}  
@@ -24,11 +27,34 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .plainText {
+		font-weight:normal;
+    font-size:12pt
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
 	}
+  .source {
+    font-size:16pt;
+    text-align:center;
+	}
+ .section {
+   padding-top:30px;
+		font-weight:bold;
+    font-size:15pt;
+	}
+  .blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+td {
+  borderr: 1px solid rgb(190,190,190);
+  padding-left: 20px;
+}
 </style>
 </head>
 <body style="background-color:white;font-size:14pt"> 
@@ -38,7 +64,7 @@
 
 <p class="title">The grid module</p>
 <p> This module will be introduced via annotated code, the first batch of which generates the image</p>
- <p><img  src="/images/grid_2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="400" height="400" max-height="500"/></p>
+ <p><img  src="/doc/grid_2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="400" height="400" max-height="500"/></p>
  <p>Here's the code:</p>
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
 import {rs as linePP} from '/line/line.mjs';
@@ -133,13 +159,16 @@ export {rs};
 let topParams = {width:wd,height:wd,numRows:nr,numCols:nr,pointJiggle:5,framePadding:0.15*wd,frameStroke:'white',backgroundColor:'rgb(200,0,0)'};
 </pre>
 need explanation. First, <span class="textVar">pointJiggle</span> , if defined and non-zero, causes
- two bounded grids to be setup via <span class="textVar">setupRandomGridForBoundaries</span>, named <span class="textVar">xJiggle</span> and <span class="textVar">yJiggle</span>. Then the points in the grid are jiggled by the amounts specified in those bounded grids. The maximum amount of jiggle is given by the <span class="textVar">pointJiggle</span> parameter. Since the grids are bounded, the amount of jiggle varies smoothly across the grid.</p>
+ two bounded grids to be setup via <span class="textVar">setupRandomGridForBoundaries</span>, named <span class="textVar">xJiggle</span> and <span class="textVar">yJiggle</span>. Then the points in the grid are jiggled by the amounts specified in those bounded grids. The maximum amount of jiggle is given by the <span class="textVar">pointJiggle</span> parameter. Since the grids are bounded, the amount of jiggle varies smoothly across the grid. Instead of pointJiggle, jiggleParams may be specified instead as in</p>
+ <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
+ let topParams = {...jiggleParams:{step:1,min:-5,max:5}...};
+</pre>
 <p>
 Next, the frame parameters:  The frame facility, which draws the white rectangle around the grid, is <a href="/doc/frame.html">documented separately</a>, since the frame facility is implemented in the basics module, not the grid module, and can be used with any of the image generation modules in prototypejungle.</p>
 <p> It is possible to modify the placement of grid points by defining <span class="textVar">positionFunction(i,j)</span> where <span class="textVar">i</span> is the index of the current cell in the x (width) direction,
 and <span class="textVar">j</span> is its index in the y (height) direction. Here is an example:</p>
 
- <p><img  src="/images/grid_example2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300"/></p>
+ <p><img  src="/doc/grid_example2.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="300" height="300"/></p>
 <p>and the code that produced it. Have a look at the positionFunction - the other operations we've seen before.
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
 import {rs as basicsP} from '/generators/basics.mjs';

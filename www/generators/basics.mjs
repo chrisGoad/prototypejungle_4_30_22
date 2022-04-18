@@ -1,5 +1,5 @@
 //active
 import {rs as addBasis} from '/mlib/basics.mjs';
-let rs = svg.Element.mk('<g/>');
+let rs = containerShape.mk();
 addBasis(rs);
 export {rs};

@@ -26,6 +26,7 @@ module.exports = [
 
    [220,'random_stripes'],
    [260,'grid_distortion_field'],
+   [260,'grid_distortion_field_warped'],
    [265,'grid_quilt_2'],
  
     [270,'grid_mat'],
@@ -33,6 +34,7 @@ module.exports = [
       [272,'grid_ramp'],
         [273,'lines_lights'],
         [274,'web_stripes_1'],
+        [274,'web_stripes'],
 
     [275,'grid_atlas'],
     [277,'grid_enigma'],
@@ -47,6 +49,7 @@ module.exports = [
         [330,'grid_cloudy_sky'],
         [340,'grid_two_quilts'],
         [350,'grid_incoming'],
+        [350,'grid_comet'],
         [360,'drop_leaves'],
         [370,'drop_metal_2'],
         [380,'grid_bump'],

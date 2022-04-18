@@ -1,9 +1,6 @@
 
-//core.require('/shape/rectangle.js','/line/line.js','/generators/basics.js','/mlib/drop.js','/mlib/segsets.js','/mlib/boundedRandomGrids.js','/mlib/drop_seeds.js',
-//function (rectPP,linePP,rs,addDropMethods,addRandomMethods,addSegsetMethods,addSeedMethods) {
-
 import {rs as rectPP} from '/shape/rectangle.mjs';
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addDropMethods} from '/mlib/drop.mjs';
 import {rs as addSegsetMethods} from '/mlib/segsets.mjs';
@@ -23,37 +20,32 @@ Object.assign(rs,topParams);
 
 
 rs.initProtos = function () {
-	core.assignPrototypes(this,'lineP',linePP);
-	this.lineP.stroke = 'white';
-	this.lineP['stroke-width'] = .5;
+  this.lineP = linePP.instantiate();
+  this.lineP.stroke = 'white';
+  this.lineP['stroke-width'] = .5;
 }  
 
 rs.genSeeds = function () {
-	let {width,height,lineP} = this;
-	let hw = 0.5 * width;
-	let hh = 0.5 * height;
-	let [segs,lines] = [[],[]];//this.gridSeeds('white');
-	let dc = 35;
-	let LL = Point.mk(dc - hw,hh-dc);
-	let LLS = this.genSingletonUnit(lineP,LL,-0.5*Math.PI,'white');
-	segs.push(LLS[0][0]);
-	// lines.push(LLS[1][0]);
-	let UL = Point.mk(dc - hw,dc-hh);
-	let ULS = this.genSingletonUnit(lineP,UL,0,'white');
-	segs.push(ULS[0][0]);
-	let LR = Point.mk(hw-dc,hh-dc);
-	let LRS = this.genSingletonUnit(lineP,LR,Math.PI,'white');
-	segs.push(LRS[0][0]);
-	// lines.push(LRS[1][0]);	// lines.push(ULS[1][0]);
-	return [segs,lines];
+  let {width,height,lineP} = this;
+  let hw = 0.5 * width;
+  let hh = 0.5 * height;
+  let [segs,lines] = [[],[]];//this.gridSeeds('white');
+  let dc = 35;
+  let LL = Point.mk(dc - hw,hh-dc);
+  let LLS = this.genSingletonUnit(lineP,LL,-0.5*Math.PI,'white');
+  segs.push(LLS[0][0]);
+  let UL = Point.mk(dc - hw,dc-hh);
+  let ULS = this.genSingletonUnit(lineP,UL,0,'white');
+  segs.push(ULS[0][0]);
+  let LR = Point.mk(hw-dc,hh-dc);
+  let LRS = this.genSingletonUnit(lineP,LR,Math.PI,'white');
+  segs.push(LRS[0][0]);
+  return [segs,lines];
 }
 
-
-
-rs.genSegments = function (p) {
+rs.genDropStruct = function (p) {
   return this.genSegmentsFan(this.lineP,p,'white');//,params);
 }
-
 
 rs.initialSegments = function () {
   let {width,height,lineP} = this; 
@@ -63,10 +55,9 @@ rs.initialSegments = function () {
 }
 
 rs.initialize = function () {
-  core.root.backgroundColor = 'black';
   this.addFrame();
   this.initProtos();
-	this.initializeDrop();
+  this.generateDrop();
 }
 
 export {rs};

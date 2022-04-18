@@ -1,1 +1,1 @@
-let altTitles = ["Drift Web","Grid 5","Deco"];
+let altTitles = ["Maze Wide","Grid 5","Grid Grid 1 I 4 V 13","Grid 5 v 5","lines from center","cobweb","tangents","stripes","stripe","void variant","Deco","Triangles","Grid 6","PBC uniform"];

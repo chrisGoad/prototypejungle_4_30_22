@@ -26,13 +26,13 @@ item.setupRandomizer = function (tp,nm,params) {
 		debugger;
 	}
 	let kind = params.kind =  (tp === 'randomGridsForBoundaries')?'boundaries':'cells';
-	if (!params.numRows) {
+	/*if (!params.numRows) {
 		params.numRows = kind==='boundaries'?this.numRows+1:this.numRows;
 		params.numCols = kind==='boundaries'?this.numCols+1:this.numCols;
-	}
+	}*/
 	let rm = this.initRandomizer();
 	let rnds = this[tp];
-  let rs  = rm.genRandomGrid({timeStep:0,params});
+  let rs  = rm.genRandomGrid(tp,{timeStep:0,params,numRows:this.numRows,numCols:this.numCols});
 	rnds[nm]  = rs;
 	return rs;
 }
@@ -116,21 +116,21 @@ item.stepRandomizer = function (tp,nm) {
     }
     if (fr === 0) {
       if (time0) {
-        //let rs  = rm.genRandomGrid(rg);
+        //let rs  = rm.genRandomGrid(tp,rg);
         ifromC = this.saveRandomState(tp,'From');
         ifrom = ifromC[nm];
       }  else {
          ifrom = wrnds.interpolateFrom[nm] = wrnds.interpolateTo[nm];
       }
       wrnds[nm] = ifrom;
-	    let rs  = rm.genRandomGrid(rg);
+	    let rs  = rm.genRandomGrid(tp,rg);
       wrnds.interpolateTo[nm] = rs;
     } else {
       this.interpolateBetweenRandomStates(wrnds,nm,fr);
     }
     return;
   }
-	let rs  = rm.genRandomGrid(rg);
+	let rs  = rm.genRandomGrid(tp,rg);
 	wrnds[nm]  = rs;
 	return rs;
 }

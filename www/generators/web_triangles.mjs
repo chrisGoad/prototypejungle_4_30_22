@@ -1,9 +1,9 @@
 //active
-//.require('/line/line.js','/shape/rectangle.js','/shape/circle.js','/shape/polygon.js','/gen0/Basics.js','/mlib/pgen.js','/mlib/web.js',
+//.require('/shape/line.js','/shape/rectangle.js','/shape/circle.js','/shape/polygon.js','/gen0/Basics.js','/mlib/pgen.js','/mlib/web.js',
 //function (linePP,rectPP,circlePP,polygonPP,Basics,addPointGenMethods,addWebMethods) {
 
 
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as polygonPP} from '/shape/polygon.mjs';
 //import {rs as circlePP} from '/shape/circle.mjs';
 import {rs as basicP} from '/generators/basics.mjs';
@@ -13,7 +13,7 @@ import {rs as addWebMethods} from '/mlib/web.mjs';
 let rs = basicP.instantiate();
 addPointGenMethods(rs);
 
-let stripes = rs.set('stripes',svg.Element.mk('<g/>'));
+let stripes = rs.set('stripes',containerShape.mk());
 
 rs.setName('web_triangles');
 
@@ -36,9 +36,9 @@ Object.assign(rs,topParams);
 Object.assign(rs,gridParams);
 	
 let numWalks = 6;
-let polygons = rs.set('polygons',core.ArrayNode.mk());
+let polygons = rs.set('polygons',arrayShape.mk());
 
-let webs = rs.set('webs',core.ArrayNode.mk());
+let webs = rs.set('webs',arrayShape.mk());
 for (let i=0;i<numWalks;i++) {
 	let w = basicP.instantiate();
 	addWebMethods(w);
@@ -63,7 +63,7 @@ rs.initProtos = function () {
 let disp = wd;
 
 rs.initialize = function () {
-  core.root.backgroundColor = 'black';
+  
 	this.initProtos();
 	this.addFrame();
 	let {circleP,rectP,polygonP} = this;
@@ -97,7 +97,7 @@ rs.initialize = function () {
 	const mkTriWeb = (i,clr,ps) => {
 		let w = webs[i];
 		let tr = mkTriangle(triangleColors[i]);
-		w.addWeb(rws[i],this.lineP);
+		w.generateWeb(rws[i],this.lineP);
 		w.moveto(ps);
 		tr.moveto(ps);
 	}

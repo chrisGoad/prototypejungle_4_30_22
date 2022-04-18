@@ -11,7 +11,8 @@ item.randomStep = function (iCorrelated,x,y,pv,istepx,istepy,istept,imin,imax,i,
   let oneWay = 0;
 	let min,max,stepx,stepy,lb,ub,rs,correlated,stept;;
 	let firstT = (pv === undefined);
-	let rp = params.walkParams;
+	let rp = (typeof params === 'function')?params:undefined;
+	//let rp = params.walkParams;
 	if (rp) {
 		let params = rp(i,j,timeStep);
 		//correlated = !params.noCorrelation;
@@ -117,37 +118,88 @@ item.indexFor = function (numRows,i,j) {
  // the bias function, if any, takes as input grid,i,j  
  // and returns two numbers: {weight,value} the weight to assign to random, and the value of the bias 
 
+// needs rework. The biasFun should be computed into the values in genRandonGrid
 
 item.valueAt = function (grid,i,j) {
   if (!grid) {
     debugger;
   }
-	let params = grid.params;
-	let {numRows,biasFun} = params;
+ // debugger;
+	//let params = grid.params;
+	let {numRows,numCols,values,params} = grid;
   let rv =  grid.values[this.indexFor(numRows,i,j)];
+ /* if (typeof params === 'function') {
+     let pv = params(i,j);
+     let bias = pv.bias;
+     if (pv) {
+       rv = rv + pv
+     }
+   }
+ let biasFun;
   if (biasFun) {
 		//debugger;
     let bfv = biasFun(grid,i,j);
     let {weight,value} = bfv;
     return weight * rv + (1 - weight)*value;
-  } else {
-    return rv;
-  }
+  } else {*/
+  return rv;
+ 
 }
    
     
-item.genRandomGrid = function (predecessor) {
-	let {timeStep:itimeStep,values:prevValues,params} = predecessor;
+item.genRandomGrid = function (tp,predecessor) {
+	let {timeStep:itimeStep,values:prevValues,params,numRows,numCols} = predecessor;
+  if ((tp == 'randomGridsForBoundaries')&&numRows) {
+    numRows++;
+    numCols++;
+  }
+  let walkParams;
 	//debugger;
-  let {kind,biasUp,numCols,numRows,step,stepx:istepx,stepy:istepy,stept,min,max,biasFun,constantFirstRow:cFr,
-	     backwards,convergenceFactor,convergenceValue,walkParams,correlated:pcor} = params;
+   //let kind,biasUp,numCols,numRows,step,stepx,stepy,stept,min,max,biasFun,constantFirstRow,
+	  //   backwards,convergenceFactor,convergenceValue,walkParams,correlated;
+  //  let walkParams;
+  let {kind,biasUp,numRows:inr,numCols:inc,step,stepx:istepx,stepy:istepy,stept,min,max,biasFun,constantFirstRow:cFr,
+	    backwards,convergenceFactor,convergenceValue,correlated:pcor} = params;
+  if (typeof params === 'function') {
+    walkParams = params;
+  } else if (inr) {
+    numRows = inr;
+    numCols = inc;
+  }
 	let stepx,stepy,correlated;
   let oneWay = 0;
 	let timeStep = prevValues?itimeStep+1:0;
 	biasUp = (biasUp === undefined)?0:biasUp;
+  const computeParams = function(i,j) {
+   // debugger;
+    let theParams = walkParams?walkParams(i,j,timeStep):params;
+    if (theParams.numRows) {
+      numRows = theParams.numRows;
+      numCols = theParams.numCols;
+		}
+	  let pcor = theParams.correlation;
+		correlated = pcor || (pcor === undefined);		
+		min = theParams.min;
+		max = theParams.max;
+		step = theParams.step;
+		stepx = theParams.stepx;
+		stepy = theParams.stepy;
+		stept = theParams.stept;
+		biasUp = theParams.biasUp;
+		if (biasUp === undefined) {
+			biasUp = 0;
+		}
+		if (typeof step === 'number') {
+			stepx = stepy = step;
+		}
+  }
+  computeParams(0,0);  
 	if (walkParams) {
-		let wparams = walkParams(0,0,timeStep);
-		
+		/*let wparams = walkParams(0,0,timeStep);
+    if (wparams.numRows) {
+      numRows = wparams.numRows;
+      numCols = wparams.Cols;
+		}
 	  let pcor = wparams.correlation;
 		correlated = pcor || (pcor === undefined);		
 		min = wparams.min;
@@ -162,18 +214,20 @@ item.genRandomGrid = function (predecessor) {
 		}
 		if (typeof step === 'number') {
 			stepx = stepy = step;
-		} 
-	} else {
+		} */
+	/*} else {
 		correlated = pcor || (pcor === undefined);
 		if (typeof step === 'number') {
 			stepx = stepy = step;
 		} else {
 			stepx  = istepx;
 			stepy  = istepy;
-		}
+		}*/
 	}
   let values = [];
-  let rs = {timeStep,values,params};
+  //debugger;
+  let rs = {timeStep,values,numRows,numCols,params};
+ // let rs = {timeStep,values,params};
   let n = numCols * numRows;
   values.length = n;
   let i = 0;
@@ -185,7 +239,9 @@ item.genRandomGrid = function (predecessor) {
 		j = goingUp?0:numRows-1;
 		let firstJ = true;
     while (goingUp?j < numRows: j>=0) {
-		
+		  if (walkParams) {
+        computeParams(i,j);
+      }
 			let idx = this.indexFor(numRows,i,j);
 			let pv = prevValues?prevValues[idx]:undefined;
 			if ((i === 0) && cFr) {
@@ -207,7 +263,7 @@ item.genRandomGrid = function (predecessor) {
 				//	values[idx] = 0.5*(min+max);
 				}
 				let vl =  lb + biasUp +Math.random() * (ub - lb);
-				//console.log('min ',min,' max ',max,' tlb ',tlb,' tub ', tub,' lb ',lb,' ub ', ub,' vl ',vl);
+				console.log('BIAS',biasUp,'i',i,'j',j,'min ',min,' max ',max,' tlb ',tlb,' tub ', tub,' lb ',lb,' ub ', ub,' vl ',vl);
 				values[idx] = vl;
 				//debugger;
 				j++;
@@ -231,6 +287,8 @@ item.genRandomGrid = function (predecessor) {
 			}
     i++;
   }
+ // debugger;
+  //return values;
   return rs;
 }
 /*
@@ -251,7 +309,7 @@ item.initRandomizer = function () {
 }
 item.setupRandomizer = function (tp,nm,params) {
 	if (nm === 'pattern') {
-		debugger;
+	//	debugger;
 	}
 	let kind = params.kind =  (tp === 'randomGridsForBoundaries')?'boundaries':'cells';
 	if (!params.numRows) {
@@ -260,7 +318,7 @@ item.setupRandomizer = function (tp,nm,params) {
 	}
 	let rm = this.initRandomizer();
 	let rnds = this[tp];
-  let rs  = rm.genRandomGrid({timeStep:0,params});
+  let rs  = rm.genRandomGrid(tp,{timeStep:0,params});
 	rnds[nm]  = rs;
 	return rs;
 }
@@ -270,7 +328,7 @@ item.stepRandomizer = function (tp,nm) {
 	let wrnds = this[tp];
 	let rg = wrnds[nm];
 	let rm = this.randomizer;
-	let rs  = rm.genRandomGrid(rg);
+	let rs  = rm.genRandomGrid(tp,rg);
 	wrnds[nm]  = rs;
 	return rs;
 }

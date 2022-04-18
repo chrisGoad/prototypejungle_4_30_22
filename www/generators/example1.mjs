@@ -19,7 +19,6 @@ rs.initProtos = function () {
 }  
 
 rs.initialize = function () {
-  debugger;
   this.initProtos();
   let {rectP} = this;
   let rect1 = rectP.instantiate();

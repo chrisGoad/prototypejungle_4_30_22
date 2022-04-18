@@ -1,9 +1,4 @@
 
-//core.require('/gen1/grid0_6.js',
-//core.require('/shape/circle.js','/gen0/Basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
-//function (circlePP,rs,addGridMethods,addRandomMethods)	{ 
-
-
 import {rs as circlePP} from '/shape/circle.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addGridMethods} from '/mlib/grid.mjs';
@@ -19,28 +14,25 @@ let wd=1000;
 let topParams = {width:wd,height:wd,numRows:nr,numCols:nr,pointJiggle:20,framePadding:0.15*wd};
 Object.assign(rs,topParams);
 
-
 rs.initProtos = function () {	
-	let circleP = this.set('circleP',circlePP.instantiate()).hide();
-	circleP.fill = 'red';
-	circleP['stroke-width'] = 0;
-  circleP.dimension = 13;
+  let circleP = this.set('circleP',circlePP.instantiate()).hide();
+  circleP.fill = 'red';
+  circleP['stroke-width'] = 0;
+  circleP.radius= 7;
 }
 
 rs.shapeGenerator = function (rvs,cell) {
   let level = 50 + 205*Math.random();
-  console.log(level);
-  let {shapes,circleP} = this;
+  let {circleP} = this;
   let shape = circleP.instantiate().show();
-  // shapes.push(shape);
   shape.fill = `rgb(${level},0,0)`;
   return shape;
 }
 
 rs.initialize = function () {
-this.addFrame();
+  this.addFrame();
   this.initProtos();
-  this.initializeGrid();
+  this.generateGrid();
 }
 
 export {rs};

@@ -1,10 +1,10 @@
-//core.require('/line/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/grid0.js',
+//core.require('/shape/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/grid0.js',
 //function (linePP,circlePP,rectPP,addGridMethods) {
-//core.require('/line/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
+//core.require('/shape/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
 
 //function (linePP,circlePP,rectPP,rs,addGridMethods,addRandomMethods) {
 
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as rectPP} from '/shape/rectangle.mjs';
 import {rs as circlePP} from '/shape/circle.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
@@ -23,20 +23,20 @@ let rs = basicsP.instantiate();
 
 let wd = 300;
 let nr= 40
-let topParams = {width:wd,height:wd,numRows:nr,numCols:nr,backgroundColor:'rgb(200,0,0)'};
+let topParams = {width:wd,height:wd,numRows:nr,numCols:nr,backFill:'rgb(200,0,0)'};
 Object.assign(rs,topParams);
 
   
 rs.initProtos = function () {
-	core.assignPrototypes(this,'lineP',linePP);
+	this.lineP = linePP.instantiate();
 	this.lineP.stroke = 'rgb(255,255,255,1)';
 	this.lineP['stroke-width'] = 0.5;
 	this.lineP.dimension = 4;
-	core.assignPrototypes(this,'circleP',circlePP);
+	this.circleP = circlePP.instantiate();
 	this.circleP.fill = 'rgb(00,200,200)';
 //	this.circleP['stroke-width'] = 0.5;
 	this.circleP.dimension = 4;
-	core.assignPrototypes(this,'rectP',rectPP);
+	this.rectP = rectPP.instantiate();
 	this.rectP.fill = 'rgb(200,0,0)';
 //	this.circleP['stroke-width'] = 0.5;
 }  
@@ -91,8 +91,8 @@ rs.boundaryLineGenerator = function (end0,end1,rvs,cell) {
 rs.initialize = function () {
 	this.initProtos();
     this.addFrame();
-    this.addBackground();
-  core.root.backgroundColor = 'black';
+    this.addRectangle(this.backFill);
+  
   let {numRows,numCols} = this;
 	/*let numRows = this.numRows= 41;
 	let numCols = this.numCols = 41;
@@ -144,7 +144,7 @@ rs.initialize = function () {
  
 
 	
-this.initializeGrid();
+this.generateGrid();
 }
 export {rs};
 

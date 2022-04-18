@@ -1,9 +1,9 @@
 //active
 //core.require('/gen0/GridLinesRandom.js',
-//core.require('/shape/rectangle.js','/line/line.js','/shape/circle.js','/shape/polygon.js','/gen0/GridLinesRandom.js',
+//core.require('/shape/rectangle.js','/shape/line.js','/shape/circle.js','/shape/polygon.js','/gen0/GridLinesRandom.js',
 //function (rs)	{ 
 //function (rectPP,linePP,circlePP,polygonPP,GridLinesRandomP)	{ 
-//core.require('/line/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js','/mlib/ParamsByCell.js',
+//core.require('/shape/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js','/mlib/ParamsByCell.js',
 
 
 import {rs as rectPP} from '/shape/rectangle.mjs';
@@ -29,14 +29,19 @@ rs.paramsByCell = null;
 rs.paramsByRow = null;
 rs.paramsByCol = null;
 
+let topParams = {randomizeOrder:0,orderByOrdinal:1,width:300,height:300,pointJiggle:0,backFill:'black',numRows:64,numCols:64,ordinalMap:[0,1,2,3,4,5,6]};
+
+Object.assign(rs,topParams);
 
 let oo = 0.1;
 let b = 255;
 let r = 255;
-rs.globalParams = {
+rs.pByC = {
 	opacityMap:{0:oo,1:oo,2:1,3:oo,4:oo,5:oo,6:oo},
-	widthFactor:2,
-	heightFactor:2,
+//	widthFactor:2,
+	widthFactor:1,
+//	heightFactor:2,
+	heightFactor:1,
 	sizePower:2,
 	maxSizeFactor:4,
 	genCircles: 0,
@@ -52,20 +57,27 @@ rs.globalParams = {
 4:`rgba(0,0,${r},${oo})`,
 5:`rgba(0,0,0,${oo})`,
 6:`rgba(${r},${r},0,${oo})`},
-sizeMap:{0:2,1:2,2:2,3:3,4:4,5:0,6:0}};
+//sizeMap:{0:1,1:0,2:0,3:0,4:0,5:0,6:0}
+sizeMap:{0:2,1:2,2:2,3:3,4:4,5:0,6:0}
+};
+
+
+rs.paramsByCelll = function (cell) {
+  return this.pByC;
+}
 
 rs.initProtos = function () {
 	
-	core.assignPrototypes(this,'rectP',rectPP);
+	this.rectP = rectPP.instantiate();
 	this.rectP.fill = 'blue';
   this.rectP['stroke-width'] = 0;
 	
 }  
 
 rs.initialize = function () {
-	debugger;
 	this.initProtos();
-  this.initializeGrid();
+  this.pByC.shapeProto = this.rectP;
+  this.generateGrid();
 }
 
 export {rs};
@@ -105,7 +117,7 @@ rs.getParams = function (cell,props) {
 			 
 		
 
-rs.globalParams = {randomizingFactor:0,sizePower:2,widthFactor:1,heightFactor:1,maxSizeFactor:2,genCircles:0,genPolygons:0,
+rs.pByC = {randomizingFactor:0,sizePower:2,widthFactor:1,heightFactor:1,maxSizeFactor:2,genCircles:0,genPolygons:0,
 	 opacityMap:{0:0.4,1:0.4,2:0.4,3:0.4,4:0.4,5:0.4,6:0.4},
 	  colorMap:{0: (r,g,b,opacity) => `rgba(${r},0,0,${opacity})`,
 	            1: (r,g,b,opacity) => `rgba(${r},0,0,${opacity})`,
@@ -117,7 +129,7 @@ rs.globalParams = {randomizingFactor:0,sizePower:2,widthFactor:1,heightFactor:1,
 		sizeMap: {0:1,1:1,2:1,3:1,4:1,5:1,6:1},
 		};
 let wd = 300;
-let topParams = {saveImage:true,numRows:ar*sqd,numCols:ar*sqd,width:wd,height:wd,backgroundColor:'rgb(200,2,2)',backgroundPadding:0.1*wd,pointJiggle:3,
+let topParams = {saveImage:true,numRows:ar*sqd,numCols:ar*sqd,width:wd,height:wd,backFill:'rgb(200,2,2)',backgroundPadding:0.1*wd,pointJiggle:3,
 ordinalMap: {0:0,1:1,2:2,3:3,4:4,5:4,6:6,7:7}}
 
 Object.assign(rs,topParams);
@@ -360,17 +372,15 @@ rs.shapeGenerator = function (rvs,cell,center) {
 
 
 rs.initProtos = function () {
-	
-	core.assignPrototypes(this,'rectP',rectPP);
+	this.rectP = rectPP.instantiate();
 	this.rectP.fill = 'blue';
 	
 }  
 
 rs.initialize = function () {
-	debugger;
 	this.initProtos();
-//	this.finishProtos();
-	  this.initializeGrid();
+  this.pByC.shapeProto = this.rectP;
+	this.generateGrid();
 }
 
 

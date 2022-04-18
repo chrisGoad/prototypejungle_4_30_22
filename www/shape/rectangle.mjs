@@ -1,5 +1,6 @@
 //This code implements the rectangle shape
 let item = svg.Element.mk('<rect/>');
+item.shape_name = 'rectangle';
 
 
 

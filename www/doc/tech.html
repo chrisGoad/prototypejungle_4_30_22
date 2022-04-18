@@ -17,6 +17,9 @@
   .indent {
 		padding-left:20px;
 	}
+  .indent2 {
+		padding-left:40px;
+	}
   .codeVar {
 		font-style:italic;
 	}  
@@ -24,11 +27,34 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .plainText {
+		font-weight:normal;
+    font-size:12pt
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
 	}
+  .source {
+    font-size:16pt;
+    text-align:center;
+	}
+ .section {
+   padding-top:30px;
+		font-weight:bold;
+    font-size:15pt;
+	}
+  .blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+td {
+  borderr: 1px solid rgb(190,190,190);
+  padding-left: 20px;
+}
 </style>
 </head>
 <body style="background-color:white;font-size:14pt"> 
@@ -37,29 +63,7 @@
 <div>
 
 
-<div class="pageTitle">Prototype Trees</div>
-
-<div style="text-align:center;font-size:14pt;top-padding:20px;color:black"><b>Prototype Trees</b></div>
-
-<p>All objects in prototypejungle  are trees from the standpoint of the object-to-own-property-value relation, but may include prototype chains and functions. This structure is called a "prototype tree". Here is an example of such a structure:</p>
-
-
- <img id="diagram" src="/doc/prototypeDiagram1_withText.svg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="550" height="250"/>
- <!--<img id="diagram" src="https://firebasestorage.googleapis.com/v0/b/project-5150272850535855811.appspot.com/o/twitter%3A14822695%2FforDocs%2FprototypeDiagram1_withText.svg?alt=media"
-      style="bborder:thin black solid;cursor:pointer"  width="550" height="250"/>-->
- 
- 
- <p>The key method supported by prototype trees, which makes them suitable for use as components, is <b>instantiate</b>.
-  Normally, JavaScript instantiation is a one level operation:</p>
- <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
- let x = <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a>(y);
- </pre>
- <p>This creates a new object x that inherits the  properties of y. For a prototype trees, the corresponding operation is</p>
-  <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
- let x=y.instantiate();
-  </pre>
-
- <p>Very roughly, instantiate performs a deep copy of <b>y</b> as a tree, and returns a structure in which all of the copied nodes inherit prototype-wise from the nodes from which they were copied. The effect is that trees of arbitrary depth can serve as templates from which instances can be spawned at one blow. Here are the details (which need not be plumbed for coding purposes):</p>
+<div class="title">Prototype Trees - Technical Details</div>
 
 
 <div class="section" id="definition">1.Definition</div>
@@ -68,26 +72,26 @@
 
 <p>1) Start with  a JavaScript tree of 
 the kind that is expressable in JSON, but allowing, unlike JSON, functions as leaves. Such a structure lacks prototypical inheritance, except from
-the Javascript core items:  <cw>Object.prototype </cw>,  <cw>Function.prototype</cw>, and  <cw>Array.prototype</cw>.<p>
+the Javascript core items:  <span class="textVar">Object.prototype </span>,  <span class="textVar">Function.prototype</span>, and  <span class="textVar">Array.prototype</span>.<p>
 
 
 
 <p>2) Next, allow prototype chains in the tree. This places another sort of graph over the first.
 It has the same nodes as the original tree, but adds a new set of edges - 
- edges which join nodes <cw>A</cw> and <cw>B</cw> if
-<cw>B</cw> is the prototype of <cw>A</cw>.  This second graph is  acyclic too, but is rarely connected. 
+ edges which join nodes <span class="textVar">A</span> and <span class="textVar">B</span> if
+<span class="textVar">B</span> is the prototype of <span class="textVar">A</span>.  This second graph is  acyclic too, but is rarely connected. 
 </p>
 <p>
-3) Add a special property <cw>__parent</cw>, where if there is a tree-edge from node <cw>A</cw> to node <cw>B</cw>, 
-<cw>B.__parent === A</cw>.  There is a tree-edge from  <cw>A</cw> to  <cw>B</cw>
-if the value of some own property  <cw>P</cw> on  <cw>A</cw> is  <cw>B</cw>,
-or if  <cw>A</cw> is an array, and <cw>B</cw> is an element of  <cw>A</cw>. As a convenience for coding,
-the special property  <cw>__name</cw> is added too, such that whenever  <cw>B.__parent === A</cw>,
-and  <cw>A.P === B</cw> with  <cw>P</cw> an own property of  <cw>A, B.__name === P</cw></p>
+3) Add a special property <span class="textVar">__parent</span>, where if there is a tree-edge from node <span class="textVar">A</span> to node <span class="textVar">B</span>, 
+<span class="textVar">B.__parent === A</span>.  There is a tree-edge from  <span class="textVar">A</span> to  <span class="textVar">B</span>
+if the value of some own property  <span class="textVar">P</span> on  <span class="textVar">A</span> is  <span class="textVar">B</span>,
+or if  <span class="textVar">A</span> is an array, and <span class="textVar">B</span> is an element of  <span class="textVar">A</span>. As a convenience for coding,
+the special property  <span class="textVar">__name</span> is added too, such that whenever  <span class="textVar">B.__parent === A</span>,
+and  <span class="textVar">A.P === B</span> with  <span class="textVar">P</span> an own property of  <span class="textVar">A, B.__name === P</span></p>
 
 <p>
-4) Now that the  <cw>__parent</cw> property explicitly picks out the tree, we can allow cross tree links.
-That is we allow  <cw>A.P = B</cw> for any two nodes in
+4) Now that the  <span class="textVar">__parent</span> property explicitly picks out the tree, we can allow cross tree links.
+That is we allow  <span class="textVar">A.P = B</span> for any two nodes in
 the tree.
 
 </p>
@@ -118,25 +122,25 @@ Then, as described above, <span class="codeWord">N</span>' will inherit from <sp
 In this case, the algorithm specifies that  the own atomic properties of <span class="codeWord">N</span> be copied to <span class="codeWord">N</span>', since
 otherwise they would be, in a sense, lost.</p> 
 
-<p>Here is a simple example. <cw>iii</cw> is the initial tree.
+<p>Here is a simple example. <span class="textVar">iii</span> is the initial tree.
 </p>
 <img src="https://firebasestorage.googleapis.com/v0/b/project-5150272850535855811.appspot.com/o/twitter%3A14822695%2FforDocs%2FinstantiateDiagram1.svg?alt=media" style="border:none" width="200" height="140"/> 
 <!--<img src="/images/instantiate1.svg" style="border:none" width="200" height="140"/> -->
 
 <p>Then after,</p>
-<pre><code>
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
 jjj = iii.instantiate();
 jjj.a.y = 4;
-</code></pre>
+</pre>
 <p>we have: </p> 
 <!-- <img src="/images/instantiate2.svg" style="border:none" width="500" height="200"/>-->
 <img style="border:none" width="250" src="https://firebasestorage.googleapis.com/v0/b/project-5150272850535855811.appspot.com/o/twitter%3A14822695%2FforDocs%2FinstantiateDiagram2.svg?alt=media"/>
 
 <p>
 So, eg,
-<cw>jjj.b.x === 1</cw>,
-since <cw>jjj.b</cw> inherits from <cw>jjj.a</cw>, which in turn inherits from <cw>iii.a</cw>.
-Note that <cw>jjj.b.z</cw> has been copied from <cw>iii.b.z</cw>, by the last-mentioned
+<span class="textVar">jjj.b.x === 1</span>,
+since <span class="textVar">jjj.b</span> inherits from <span class="textVar">jjj.a</span>, which in turn inherits from <span class="textVar">iii.a</span>.
+Note that <span class="textVar">jjj.b.z</span> has been copied from <span class="textVar">iii.b.z</span>, by the last-mentioned
 <a href="#lastStep">step</a> of the algorithm mentioned above.</p>
 
 <p><a href="https://github.com/chrisGoad/{{siteName}}/blob/master/js/core/instantiate.js">Here</a> is the implementation.</p>
@@ -150,7 +154,7 @@ contain interior nodes which either inherit prototype-wise from elsewhere in the
 This is not quite right.  Instead of using plain object and arrays,  we instead introduce these prototypes:</p>
 
 
-<pre>
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
   
 const ObjectNode = {};
 
@@ -160,7 +164,7 @@ const ArrayNode = [];
 <p>
 With these constructors:
 </p>
-<pre>
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
   
 ObjectNode.mk = function () {return Object.create(pj.Object)}
 
@@ -168,17 +172,15 @@ ArrayNode.mk = function () {return Object.create(pj.Array)}
 
 </pre>
 <p>	
-(Note that <cw>Object.create</cw> is used here, and not any form of <cw>new</cw>.
-This <cw>new</cw>-avoidance is a general {{ProjectName}} policy, as explained
-<a href="/doc/code.html#nonews">here</a>). This means that we can define tree operations on
-<cw>ObjectNode</cw> and
-<cw>ArrayNode</cw> without polluting the basic JavaScript name spaces <cw>Object.prototype</cw> and
-<cw>Array.prototype</cw>. Such pollution would affect all JavaScript objects and arrays, not just the ones used in the
-{{ProjectName}} implementation.
+ This means that we can define tree operations on
+<span class="textVar">ObjectNode</span> and
+<span class="textVar">ArrayNode</span> without polluting the basic JavaScript name spaces <span class="textVar">Object.prototype</span> and
+<span class="textVar">Array.prototype</span>. Such pollution would affect all JavaScript objects and arrays, not just the ones used in the
+PrototypeJungle implementation.
 </p>
 <p id="externals">
 
-A final, and very useful, generalization can be made. A prototype tree defined in the core module, <cw>externals</cw>, holds a series of objects suitable for instantiation
+A final, and very useful, generalization can be made. A prototype tree defined in the core module, <span class="textVar">externals</span>, holds a series of objects suitable for instantiation
 into other trees.
 The other modules, such as geom, add things to externals as they are loaded.
 When any prototype tree containing an external  is serialized, the external is encoded by its path within the externals tree.
@@ -201,7 +203,7 @@ defined as a pair of graphs over the same set of nodes, graphs given by two sort
 isPrototypeOf edges.
 The former graph, as always,
 is restricted to be a tree.  Before the ammendment, interior nodes either inherited from another node in a tree,  or from
-<cw>Array.prototype</cw> or <cw>Object.prototype</cw>,
+<span class="textVar">Array.prototype</span> or <span class="textVar">Object.prototype</span>,
 or from a component.
 Now, interior nodes can inherit from any object in the externals tree as well.
 </p>

@@ -12,7 +12,7 @@ let topParams = {width:ht*1.5,height:ht,frameWidth:1.5*1.12*ht,frameHeight:1.12*
 Object.assign(item,topParams);
 
 item.initialize = function () {
-  core.root.backgroundColor = 'black';
+  
   let left = this.set('left',eyeP.instantiate());
   left.left = 1;
   let right = this.set('right',eyeP.instantiate());

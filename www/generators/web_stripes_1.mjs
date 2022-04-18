@@ -1,11 +1,5 @@
-//active
-//active
-//core.require('/line/line.js','/gen0/Basics.js','/mlib/pointGen.js','/mlib/web.js',
-//function (linePP,Basics,addPointGenMethods,addWebMethods) {
 
-
-
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as circlePP} from '/shape/circle.mjs';
 import {rs as basicP} from '/generators/basics.mjs';
 import {rs as addPointGenMethods} from '/mlib/pointGen.mjs';	
@@ -54,11 +48,11 @@ rs.initialize = function () {
   this.addFrame();
 	//this.initBasis();
 	let pnts = this.genGrid(gridParams);
-	stripes[0].addWeb(pnts,this.lineP);
-	stripes[1].addWeb(pnts,this.lineP2);
-	stripes[2].addWeb(pnts,this.lineP);
-	stripes[3].addWeb(pnts,this.lineP2);
-	stripes[4].addWeb(pnts,this.lineP);
+	stripes[0].generateWeb(pnts,this.lineP);
+	stripes[1].generateWeb(pnts,this.lineP2);
+	stripes[2].generateWeb(pnts,this.lineP);
+	stripes[3].generateWeb(pnts,this.lineP2);
+	stripes[4].generateWeb(pnts,this.lineP);
 	}
 
 

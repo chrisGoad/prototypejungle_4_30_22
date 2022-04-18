@@ -1,18 +1,15 @@
 
-import {rs as linePP} from '/line/line.mjs';
-import {rs as rectPP} from '/shape/rectangle.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addGridMethods} from '/mlib/grid.mjs';
-//import {rs as addRandomMethods} from '/mlib/boundedRandomGrids.mjs';
 let rs = basicsP.instantiate();
 
 addGridMethods(rs);
-//addRandomMethods(rs);
 rs.setName('grid_eye');
 
 let wd = 100;
 let nr = 50;
-let params = {numRows:nr,numCols:nr,width:wd,height:wd,lineLength:wd/nr,frameColor:'rgb(152,45,45)',framePadding:0.1*wd,frameVisible:0};
+let params = {numRows:nr,numCols:nr,width:wd,height:wd,lineLength:wd/nr,frameStroke:'rgb(150,43,43)',framePadding:0.1*wd};
 Object.assign(rs,params);
 
 rs.initProtos = function () {
@@ -22,9 +19,9 @@ rs.initProtos = function () {
 
 rs.shapeGenerator = function (rvs,cell,cnt) {
   let {shapes,lineLength,width} = this;
-	let line = this.lineP.instantiate();
-	shapes.push(line);
-	let dir = 2*Math.PI * Math.random();
+  let line = this.lineP.instantiate();
+  shapes.push(line);
+  let dir = 2*Math.PI * Math.random();
   this.setLineEnds(line,lineLength,dir);
   let maxd = 0.5 * width;
   let {x,y} = cell;
@@ -42,14 +39,14 @@ rs.shapeGenerator = function (rvs,cell,cnt) {
     }
     line.stroke = clr;
   }
-	return line;
+  return line;
 }
 
 rs.initialize = function () {
-  core.root.backgroundColor = 'rgb(150, 43, 43)';
+  this.setBackgroundColor('rgb(150, 43, 43)');
   this.addFrame();
   this.initProtos();
-  this.initializeGrid();
+  this.generateGrid();
 }
 
 export {rs};

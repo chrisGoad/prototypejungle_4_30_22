@@ -1032,7 +1032,10 @@ SvgRoot.resize = function (wd,ht) {
 }
  
 let SvgElement = Object.create(Element).__namedType();
-SvgElement.mk = function () {return Object.create(SvgElement)};
+SvgElement.mk = function () {
+  let enm = SvgElement?SvgElement:'<g/>';
+  return Object.create(enm)
+};
 
 svg.Element = SvgElement;
 
@@ -2166,10 +2169,14 @@ core.ObjectNode.__svgClear = function () {
 }
 
 SvgElement.mk = function (s) {
+  let enm = s?s:'<g/>';
+  if (!s) {
+    debugger;
+  }
   let hasVis = false;
   let rs,ops,pv;
-  if (s) {
-    rs = parseWithDOM(s,true);
+  if (enm) {
+    rs = parseWithDOM(enm,true);
     // introduce computed __values
     ops = Object.getOwnPropertyNames(rs);
     ops.forEach(function (p) {

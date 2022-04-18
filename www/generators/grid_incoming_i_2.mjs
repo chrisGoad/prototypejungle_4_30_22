@@ -1,4 +1,4 @@
-//core.require('/line/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
+//core.require('/shape/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
 
 //function (linePP,circlePP,rectPP,rs,addGridMethods,addRandomMethods) {
 

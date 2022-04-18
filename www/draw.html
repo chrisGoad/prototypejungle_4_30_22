@@ -20,7 +20,6 @@
 </script>
  
 <script type="module">
-debugger;
   import * as core from "/js/core-1.1.0.js";
 import * as geom from "/js/geom-1.1.0.js";
 import * as dom from "/js/dom-1.1.0.js";
@@ -43,9 +42,10 @@ fcont.xxxx = {};
 ui.vars = {};
 ui.hide = () => {};
 Window.ui = ui;
-let graph = {}
+let graph = {};
 graph.installCirclePeripheryOps = () => {}
 Window.graph = graph;
+let troort = 3;
 
 
 let aaaa,ctx,img,natWidth,natHeight,canvas;
@@ -62,7 +62,6 @@ const drawImage = function () {
 	  draw.initPage();
 	  return;
 	}
-	debugger;
 	let scale  = qs.scale?Number(qs.scale):0.1;
 	let mnim = `inputImages/${image}`;
 	let imageIn = `${mnim}.jpg`;
@@ -132,15 +131,15 @@ window.addEventListener("DOMContentLoaded", () => {
    <div id="topbarOuter" style="color:black;">
       <div id="title" style="display:inline-block">
         <span class="mainTitle">PrototypeJunglee </span> <span style="font-size:8pt">Draw</span>
-				<div style="display:inline-block" class="button" id="runButton">Run Animation</div>
+	<!--			<div style="display:inline-block" class="button" id="runButton">Run Animation</div>
 				<div style="display:inline-block" class="button" id="resumeButton">Resume Animation</div>
 				<div style="display:inline-block" class="button" id="pauseButton">Pause</div>
 				<div style="display:inline-block" class="button" id="stepButton">Step</div>
 				<div style="display:inline-block" class="button" id="stepNoSaveButton">Step No Save</div>
 				<div style="display:inline-block" class="button" id="repeatFrameButton">Repeat Frame</div>
-				<div style="display:inline-block" class="button" id="saveAnimationButton">Save Animation</div>
+				<div style="display:inline-block" class="button" id="saveAnimationButton">Save Animation</div>-->
 				<div style="display:inline-block" class="button" id="saveButton">Save Image</div>
-				<div style="display:inline-block" class="button" id="saveMpixButton">Save Image for Mpix</div>
+				<div style="display:inline-block" class="button" id="saveMpixButton">Save Image (High Res)</div>
       </div>
       <div id = "topbarInner" style="float:right"></div>
    </div>

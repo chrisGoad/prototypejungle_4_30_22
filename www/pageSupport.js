@@ -94,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
   } else if (imKind === 'alt') {
     thePages = altPages;
     theTitles = altTitles;
+    theLocals = altLocals;
+
   }
 	//lastPage = getArgs.lastPage;
 	let title = theTitles[cPage];

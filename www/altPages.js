@@ -1,1 +1,1 @@
-let altPages= ["web_drift.jpg","grid_grid_1_i_3_v_4.jpg","grid_decos.jpg"];
+let altPages= ["grid_maze_wide.jpg","grid_grid_1_i_3.jpg","grid_grid_1_i_4_v_13.jpg","grid_grid_1_i_3_v_5.jpg","lines_from_center.jpg","lines_cobweb.jpg","lines_tangents.jpg","web_stripes.jpg","web_stripe.jpg","grid_void_variant.jpg","grid_decos.jpg","web_triangles.jpg","grid_6.jpg","grid_pbc_uniform_size.jpg"];

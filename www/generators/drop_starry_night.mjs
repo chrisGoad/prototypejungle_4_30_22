@@ -1,4 +1,4 @@
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addDropMethods} from '/mlib/drop.mjs';
 import {rs as addSegsetMethods} from '/mlib/segsets.mjs';
@@ -14,9 +14,9 @@ Object.assign(rs,topParams);
 
 
 rs.initProtos = function () {
-	this.lineP = linePP.instantiate();
-	this.lineP.stroke = 'white';
-	this.lineP['stroke-width'] = .5;
+  this.lineP = linePP.instantiate();
+  this.lineP.stroke = 'white';
+  this.lineP['stroke-width'] = .5;
 }  
 
 rs.segParams = function () {
@@ -27,7 +27,7 @@ rs.segParams = function () {
   return {angle,length};
 }
 
-rs.genSegments = function (p) {
+rs.genDropStruct = function (p) {
   let sizes = [2,5,10,20,40];
   let which = Math.floor(Math.random()*5);
   let sz = sizes[which];
@@ -35,14 +35,11 @@ rs.genSegments = function (p) {
   let ht = sz;
   let segs = this.rectangleSegments(wd,ht,p);
   let lines = segs.map((sg) => this.genLine(sg,this.lineP));
-
   const genRGBval = function () {
     return 50 + Math.floor(Math.random()*202);
   }
-  let r = genRGBval();
-  let g = genRGBval();
-  let b = genRGBval();
-  let clr = `rgb(${r},${r},${r})`;
+  let v = genRGBval();
+  let clr = `rgb(${v},${v},${v})`;
   lines.forEach( (line) => line.stroke = clr);
   return [segs,lines];
 }
@@ -56,10 +53,9 @@ rs.initialSegments = function () {
 }
 
 rs.initialize = function () {
-  core.root.backgroundColor = 'black';
   this.addFrame();
-	this.initProtos();
-	this.initializeDrop();
+  this.initProtos();
+  this.generateDrop();
 }
 
 export {rs};

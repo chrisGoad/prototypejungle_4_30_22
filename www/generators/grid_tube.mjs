@@ -1,10 +1,10 @@
 
-//core.require('/line/line.js','/grid/grid24cons.js',function (linePP,constructor) {
-//core.require('/line/line.js','/gen0/Basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
+//core.require('/shape/line.js','/grid/grid24cons.js',function (linePP,constructor) {
+//core.require('/shape/line.js','/gen0/Basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
 //function (linePP,rs,addGridMethods,addRandomMethods)	{ 
 
 
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addGridMethods} from '/mlib/grid.mjs';
 import {rs as addRandomMethods} from '/mlib/boundedRandomGrids.mjs';
@@ -34,7 +34,7 @@ rs.initProtos = function () {
 }
 
 rs.boundaryLineGenerator = function (end0,end1,rvs,cell) {
-  core.root.backgroundColor = 'black';
+  
   let lines = this.lines;
   let line = this.bLineP.instantiate();
   // lines.push(line);
@@ -47,7 +47,7 @@ rs.boundaryLineGenerator = function (end0,end1,rvs,cell) {
 }
 
 rs.regionLineGenerator =   function (end0,end1,rvs,cell) {
-  core.root.backgroundColor = 'black';
+  
   let rlines = this.rlines;
   let line = this.rLineP.instantiate();
   r// lines.push(line);
@@ -62,6 +62,6 @@ rs.initialize = function () {
   this.initProtos();
   this.addFrame();
   this.setupRandomGridForBoundaries('red', {step:35,min:20,max:200});
-  this.initializeGrid();
+  this.generateGrid();
 }
 export {rs};

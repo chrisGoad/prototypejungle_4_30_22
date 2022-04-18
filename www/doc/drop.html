@@ -24,10 +24,15 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
+	}
+ .section {
+		font-weight:bold;
+    font-size:14pt;
 	}
 </style>
 </head>
@@ -37,7 +42,7 @@
 <div>
 
 <p> This module will be introduced via annotated code, which generates the image</p>
- <p><img  src="/images/drop_ice.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="600" height="400" max-height="500"/></p>
+ <p><img  src="/doc/drop_ice.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="400" height="400" max-height="500"/></p>
  <p>Here's the code:</p>
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
 
@@ -101,19 +106,33 @@ export {rs};
 
 
 </pre>
-<p> The DROP algorithm drops  things at random positions on the canvas. If a thing lands on top of another, it is thrown away.   I have used the vague word "thing". A thing is a pair [lineSegments,lines]. The lineSegments are used for detecting collisions. If a given drop does not intersect with the lineSegments already dropped, then the lines are displayed (by adding them to the shape tree).
+<p> The DROP algorithm drops  things at random positions on the canvas. If a thing lands on top of another, it is thrown away, otherwise it is added.   I have used the vague word "thing". A thing is a pair [lineSegments,lines], called a dropStruct. Often, but not always, the lines correspond directly to the segments in that they have the same ends; that is, they coincide geometrically. The operation
+
+rs.segsToDropStruct = function (segs,lineP) {
+  return [segs,segs.map((seg) => this.genLine(seg,LineP)]
+]
+
+will convert an array of segments into a dropStruct where this exact correspondence holds.
+ 
+As I say, lineSegments are used for detecting collisions. If a given drop does not intersect with the lineSegments already dropped, then the lines are displayed (by adding them to the shape tree).
  The segsets method library is used to build sets of segments. </p>
 
-<p>Let rs be the generator object. Sets of line segments (and lines) are created by the method rs.genSegments. This method has the form: </p>
+<p>In an image generator, the  method: </p>
 <pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
-rs.genSegments = function (p) {
+rs.genDropStruct = function (p) {
 ...
 return [segs,lines];
 }
 </pre>
-<p>where p is a Point (the "anchor point"),   segs is an array of lineSegments, and lines an array of lines.  Elements of segs are added to the set of all segs dropped so far. As mentioned above, each time there is a new attempted drop, it is checked whether any of the new segs intersect any of those already dropped. If not, the drop succeeds, and the segs are added the already dropped array, and the lines are added to the set of lines to be displayed.  The relationship between segs and lines is up to the generator, but a typical case is where the ends of the lines are taken from the ends of the segs (so that they coincide, geometrically). A value of the form [segs:array(LineSegment),lines:array(Line)] is called a "segset" (even though lines are included as well as segs). </p>
+<p>should be defined, where p is a Point (the "anchor point"). rs.performDrop will call rs.genDropStruct  on randomly generated points p within the canvas.  </p>
 
-<p>Parameters: dropTries sets how many unsuccessful drops are tolerated before the algorithm is terminated. </p>
+<p>Parameters: rs.dropTries sets how many unsuccessful drops are tolerated before the algorithm is terminated. </p>
+
+<p> The DROP algorithm has another mode of operation, which is deployed when the top parameter fromEnds is set.
+
+In fromEnds mode, segments are dropped in such a way as to extend an already existing tree. In this mode, illustrated by the dandelion, the current state consists of a tree of segments. Each segment in the tree is either interior, meaning that its end1 has been continued by one or more segments, or terminal, meaning that there is no continuing segment emerging from its end1.
+
+let topParams = {width:wd,height:ht,dropTries:10,lineLength:5,framePadding:0.15*ht,frameVisible:0,minSeparation:0,rectangleDim:0.2,gridPadding:60,fromEnds:1,sepNext:0.01,extendWhich:'first',splitChance:.40,splitAmount:0.05 * Math.PI,seedDirections:[0*Math.PI],directionChange:0.0*Math.PI,randomDirectionChange:0.025*Math.PI,lineExt:0,numSeeds:15,fromEnds:1,doNotExit:[geom.Circle.mk(Point.mk(0,0),0.5*ht)]};
 
 
 </div>

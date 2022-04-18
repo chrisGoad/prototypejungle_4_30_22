@@ -17,6 +17,9 @@
   .indent {
 		padding-left:20px;
 	}
+  .indent2 {
+		padding-left:40px;
+	}
   .codeVar {
 		font-style:italic;
 	}  
@@ -24,11 +27,34 @@
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .plainText {
+		font-weight:normal;
+    font-size:12pt
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
 	}
+  .source {
+    font-size:16pt;
+    text-align:center;
+	}
+ .section {
+   padding-top:30px;
+		font-weight:bold;
+    font-size:15pt;
+	}
+  .blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+td {
+  borderr: 1px solid rgb(190,190,190);
+  padding-left: 20px;
+}
 </style>
 </head>
 <body style="background-color:white;font-size:14pt"> 
@@ -63,5 +89,37 @@ they are used to produce the <span class="textVar">rvs</span>  argument  to <a h
 import {rs as addRandomMethods} from '/mlib/boundedRandomGrids.mjs';
 addRandomMethods(item);
 </pre>	
+<p> Sometimes, instead of fixing bounding parameters for the entire grid, it is desirable to have them vary with grid coordinates. For this case, the params can be formulated as a function of type
+<span class="textVar">(x:number,j:number) => {step:number,min:&lt;number&gt;,max:&lt;number&gt;}</span>. Here is an example
+<pre style="padding-left:20px;font-size:10pt;font-weight:bold" class="code">
+ 
+
+rs.initialize = function () {
+  core.root.backgroundColor = 'black';
+  this.initProtos();
+  let {numRows,numCols,lowJiggle,highJiggle,lowJiggleStep,highJiggleStep} = this;
+  this.addFrame();
+  let root2 = Math.sqrt(2);
+  let hnr = numRows/2;
+  const computeParams =  (i,j) => {
+    let di = i - hnr;
+    let dj = j - hnr;
+    let maxFromCenter = root2*hnr;
+    let fromCenter = Math.sqrt(di*di + dj*dj);
+    let factor = 1 - fromCenter/maxFromCenter;// 0 at corners, up to 1 at center
+    let jiggleMax = factor * highJiggle;
+    let jiggleStep = factor * highJiggleStep;
+    return {step:jiggleStep,min:-jiggleMax,max:jiggleMax,bias:i};
+  }
+  this.pointJiggleParams = computeParams;
+  this.generateGrid();
+}
+
+</pre>
+<p> in the context of <a href="/generators/grid_distortion_field.mjs">/generators/grid_distortion_field.mjs</a> </p>
+
+<p> This produdes the following image, in which the jiggle increases towards the center:</p>
+ <p><img  src="/doc/grid_distortion_field_square.jpg?alt=media" style="bborder:thin black solid;cursor:pointer"  width="400" height="400" max-height="500"/></p>
+
 </body>
 </html>

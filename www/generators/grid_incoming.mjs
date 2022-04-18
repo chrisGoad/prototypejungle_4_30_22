@@ -1,7 +1,7 @@
-//core.require('/line/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
+//core.require('/shape/line.js','/shape/circle.js','/shape/rectangle.js','/gen0/basics.js','/mlib/grid.js','/mlib/boundedRandomGrids.js',
 
 //function (linePP,circlePP,rectPP,rs,addGridMethods,addRandomMethods) {
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as circlePP} from '/shape/circle.mjs';
 import {rs as rectPP} from '/shape/rectangle.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
@@ -96,7 +96,7 @@ grid2.boundaryLineGenerator = function (end0,end1,rvs,cell) {
 }
 rs.initialize = function () {
  // debugger;
- // core.root.backgroundColor = 'blue';
+ // setBackgroundColor( = 'blue';
   let {focalPoint,focalLength,cameraScaling} = this.grid1;
   this.addFrame();
 
@@ -104,9 +104,9 @@ rs.initialize = function () {
   this.grid2.camera = geom.Camera.mk(focalPoint,focalLength,cameraScaling,'z');
 
   this.grid1.initProtos();
-  this.grid1.initializeGrid();
+  this.grid1.generateGrid();
   this.grid2.initProtos();
-  this.grid2.initializeGrid();  
+  this.grid2.generateGrid();  
 }
 export {rs};
 

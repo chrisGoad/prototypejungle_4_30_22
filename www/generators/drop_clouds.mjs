@@ -1,4 +1,4 @@
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addDropMethods} from '/mlib/drop.mjs';
 import {rs as addSegsetMethods} from '/mlib/segsets.mjs';
@@ -17,12 +17,12 @@ Object.assign(rs,topParams);
 
 
 rs.initProtos = function () {
-	let lineP = this.lineP = linePP.instantiate();
-	this.lineP.stroke = 'white';
-	this.lineP['stroke-width'] = .6;
+  let lineP = this.lineP = linePP.instantiate();
+  this.lineP.stroke = 'white';
+  this.lineP['stroke-width'] = .6;
 }  
 
-rs.genSegments = function (p) {
+rs.genDropStruct = function (p) {
   let {width,height,lineP} = this;
   let params = {direction:0.75*Math.PI,zigzag:1,randomness:0,vertical:0,widths:[10],heightRatio:0.05,numSegs:4,pos:p};
   let which = this.computeWhichByCornerInterpolation(p);
@@ -56,10 +56,9 @@ rs.initialSegments = function () {
 
   
 rs.initialize = function () {
-  core.root.backgroundColor = 'black';
   this.addFrame();
-	this.initProtos();
-	this.initializeDrop();
+  this.initProtos();
+  this.generateDrop();
 }
 
 export {rs};

@@ -10,15 +10,14 @@ rs.setName('grid_world');
 let sqsz= 50;
 let sqd = 50;
 let wd = 0.8 * sqd * sqsz;
-//let topParams = {numCols:sqd,numRows:sqd,width:wd,height:wd,backgroundColor:'rgb(100,100,100)',backgroundPadding:0.1*wd,randomizeOrder:1};
 let topParams = {numCols:sqd,numRows:sqd,width:wd,height:wd,framePadding:0.1*wd,randomizeOrder:1};
 Object.assign(rs,topParams);
 
 rs.initProtos = function () {
-	this.rectP = rectPP.instantiate();
-	this.rectP.stroke = 'black';
-	this.rectP.fill = 'blue';
-	this.rectP['stroke-width'] = 4;
+  this.rectP = rectPP.instantiate();
+  this.rectP.stroke = 'black';
+  this.rectP.fill = 'blue';
+  this.rectP['stroke-width'] = 4;
 }  
 
 let baseColor = 100;
@@ -34,12 +33,10 @@ rs.shapeGenerator = function (rvs,cell) {
   let fc =1 - rdist;
   let clr = 100 + 200*(1-rdist);
   let dim =  Math.sqrt(Math.max(0,fc)) * 2 * sqsz;
- //console.log('dim',dim,' rOw ',rOw);
   shape.width = dim;
   shape.width = 1 * dim;
   shape.height = dim;
   shape.height = 1*dim;
-  // shapes.push(shape);
   let lev = 100 + bOw*50;
   let scolor = Math.max(baseColor,clr - 50);
   shape.fill = (bOw < 1)?`rgba(${scolor-50},${scolor-50},${clr},1)`:`rgba(${clr},${clr},${clr})`;
@@ -48,11 +45,10 @@ rs.shapeGenerator = function (rvs,cell) {
 }
 
 rs.initialize = function () {
-	core.root.backgroundColor = 'black';
-	this.initProtos();
+  this.initProtos();
   this.addFrame();
   this.setupRandomGridForShapes('blueOrWhite',{step:0.5,min:0,max:2});
-	this.initializeGrid();
+  this.generateGrid();
 }
 
 export {rs};

@@ -1,4 +1,5 @@
 
+import {rs as rectPP} from '/shape/rectangle.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addGridMethods} from '/mlib/grid.mjs';
 import {rs as addRandomMethods} from '/mlib/topRandomMethods.mjs';
@@ -10,15 +11,36 @@ addRandomMethods(rs);
   
 let wd = 400;
 let nr = 20;
-let topParams = {width:wd,height:wd,numRows:nr,numCols:nr,pointJiggle:10,innerRows:5};
+let topParams = {saveState:1,width:wd,height:wd,numRows:nr,numCols:nr,pointJiggle:10,innerRows:5};
 
 Object.assign(rs,topParams);
 
+
+rs.initProtos = function () {
+  let {innerWidth} = this;
+  let rectP1 = this.rectP1 = rectPP.instantiate();
+  rectP1['stroke-width'] = 0;
+  rectP1.fill = 'rgba(255,255,255,0.5)';
+  rectP1.fill = 'white';
+ // rectP1.fill = 'pink';
+  let rectP2 = this.rectP2 = rectPP.instantiate();
+  rectP2['stroke-width'] = 0;
+  rectP2.fill = 'rgba(0,0,255,0.5)';
+  rectP2.fill = 'white';
+ // rectP2.fill = 'pink';
+ //rectP2.fill = 'rgb(100,100,250)';
+  rectP1.width = .2*innerWidth;
+  rectP1.height = .2*innerWidth;  
+  rectP1.width = .5*innerWidth;
+  rectP1.height = .5*innerWidth; 
+  rectP2.width = .9*innerWidth;
+  rectP2.height = .9*innerWidth;
+}
 rs.genEltDescription = function (n) {
   // let {innerRows,deltaX,rectP1,rectP2,innerPresent1,innerPresent2,saveState,whichElts,whichShape1,whichShape2} = this;
    let {innerRows,deltaX,rectP1,rectP2,eltDState1,eltDState2,saveState} = this;
    let eltDState = n===1?eltDState1:eltDState2;
-   let innerShapePs = [];// core.ArrayNode.mk();
+   let innerShapePs = [];// arrayShape.mk();
    let positions = this.genInnerGridPositions();
    let innerPresent = saveState?[]:eltDState[1];
    let whichShape;   
@@ -48,7 +70,7 @@ rs.whichElts = [];
 rs.shapeCount = 0;
 rs.shapeGenerator = function (rvs,cell) {
 	let {eltDescription1,eltDescription2,shapes,whichElts,saveState,shapeCount} = this;
-  let shape = svg.Element.mk('<g/>');
+  let shape = containerShape.mk();
   
   if (saveState) {
     if (this.decider(rvs,cell)) {
@@ -97,14 +119,14 @@ rs.initialize = function () {
     this.innerPresent2 = eltD2.innerPresent;
     this.whichShape1  = eltD2.whichShape1;
     this.whichShape2  = eltD2.whichShape2;*/
-    this.initializeGrid();
+    this.generateGrid();
     this.saveTheState();
   } else {
     this.getTheState(() => {
       debugger;
       this.eltDescription1 = this.genEltDescription(1);
       this.eltDescription2 = this.genEltDescription(2);
-      this.initializeGrid();
+      this.generateGrid();
     });
   }
 }

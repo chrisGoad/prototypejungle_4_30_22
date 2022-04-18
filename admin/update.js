@@ -38,6 +38,9 @@ var boilerplate1 =
   .indent {
 		padding-left:20px;
 	}
+  .indent2 {
+		padding-left:40px;
+	}
   .codeVar {
 		font-style:italic;
 	}  
@@ -45,11 +48,34 @@ var boilerplate1 =
   .textVar {
 		font-weight:bold;
     font-size:12pt
-	}.title {
+	}
+  .plainText {
+		font-weight:normal;
+    font-size:12pt
+	}
+  .title {
 		font-weight:bold;
     font-size:16pt;
     text-align:center;
 	}
+  .source {
+    font-size:16pt;
+    text-align:center;
+	}
+ .section {
+   padding-top:30px;
+		font-weight:bold;
+    font-size:15pt;
+	}
+  .blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+td {
+  borderr: 1px solid rgb(190,190,190);
+  padding-left: 20px;
+}
 </style>
 </head>
 <body style="background-color:white;font-size:14pt"> 
@@ -159,9 +185,9 @@ var fs = require('fs');
 //xferDir(0,'www','doc');
 xferDir('admin');
 xferDir('server');
-xferFiles('www',['draw.html','topdefs.js','style.css','spectrum.css','page.html','pageSupport.js']);
+xferFiles('www',['draw.html','index.html','topdefs.js','style.css','spectrum.css','page.html','pageSupport.js']);
 xferFiles('admin',['genGrids.js','gridSections.js','imageOrder.js']);
-xferDirs(['www/generators','www/instances','www/line','www/shape','www/mlib','www/json','www/doc']);
+xferDirs(['www/generators','www/instances','www/shape','www/mlib','www/json','www/doc']);
 xferDirs(['js/core','js/dom','js/geom','js/draw']);
 return;
 //xferDir(0,'www','');

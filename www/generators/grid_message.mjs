@@ -1,4 +1,4 @@
-import {rs as linePP} from '/line/line.mjs';
+import {rs as linePP} from '/shape/line.mjs';
 import {rs as rectPP} from '/shape/rectangle.mjs';
 import {rs as basicsP} from '/generators/basics.mjs';
 import {rs as addGridMethods} from '/mlib/grid.mjs';
@@ -36,14 +36,14 @@ let base =20;
 let gridParams ={numRows:base,numCols:base*rfac,width:150*wfac,height:100*wfac,includeLetters:1,letterWidth:3,letterHeight:3,fractionInked:0.4,lettersPerWord:5};
 
 rs.initialize = function () {
-  core.root.backgroundColor = 'black';
+  
   this.addFrame();
   let lines = this.set('lines',basicsP.instantiate());
   addLinesMethods(lines);
   initializeLinesProtos(lines);
   Object.assign(lines,linesParams)
   lines.originatingShapes = [geom.Circle.mk(Point.mk(-100,-200),100),geom.Circle.mk(Point.mk(100,-200),100)];
-  lines.initializeLines();
+  lines.generateLines();
   let grid = this.set('grid',basicsP.instantiate());
   addGridMethods(grid);
   initializeGridProtos(grid);
@@ -52,7 +52,7 @@ rs.initialize = function () {
   rect.width = grid.width+20;
   rect.height = grid.height+20;
   rect.moveto(Point.mk(0,5));
-  grid.initializeGrid();
+  grid.generateGrid();
 }	
 export {rs};
 

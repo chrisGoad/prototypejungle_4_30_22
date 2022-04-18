@@ -58,7 +58,7 @@ rs.genEltDescription = function (n) {
   // let {innerRows,deltaX,rectP1,rectP2,innerPresent1,innerPresent2,saveState,whichElts,whichShape1,whichShape2} = this;
    let {innerRows,deltaX,rectP1,rectP2,eltDState1,eltDState2,saveState} = this;
    let eltDState = n===1?eltDState1:eltDState2;
-   let innerShapePs = [];// core.ArrayNode.mk();
+   let innerShapePs = [];// arrayShape.mk();
    let positions = this.genInnerGridPositions();
    let innerPresent = saveState?[]:eltDState[1];
    let whichShape;   
@@ -92,7 +92,7 @@ rs.genInnerGrid = function (iw) {
    rs.height = innerWidth;
    rs.numRows = innerRows;
    rs.numCols = innerRows;
-   rs.initializeGrid();
+   rs.generateGrid();
    return rs;
  }
 
@@ -145,7 +145,7 @@ rs.initialize = function () {
     rs.whichInners = [];
     this.innerGrid1 = rs.genInnerGrid();
     this.innerGrid2 = rs.genInnerGrid();
-    this.initializeGrid();
+    this.generateGrid();
     this.saveTheState();
   } else {
     this.getTheState(() => {
@@ -153,7 +153,7 @@ rs.initialize = function () {
       this.innerGrid1 = rs.genInnerGrid(this.innerWhich1);
       this.innerGrid2 = rs.genInnerGrid(this.innerWhich2);
       this.genCount = 0;
-      this.initializeGrid();
+      this.generateGrid();
     });
   }
 }

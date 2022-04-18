@@ -30,7 +30,7 @@ let vertical = kind === 'vertical';
 let horizontal = kind === 'horizontal';
 let horizontalnf = kind === 'horizontalnf'; // horizontal no frame
 let square = kind === 'square';
-let grids = kind === 'grids';
+let grids = kind === 'images';
 
 console.log('kind','['+kind+']','sortByOrder',sortByOrder,'forKOP',forKOP,'byKind',byKind,'byAspect',byAspect,'byLikes',byLikes,'signed',signed,'horizontal',horizontal,'horizontalnf',horizontalnf);
 //return;
@@ -108,7 +108,7 @@ if (byLikes) {
  console.log('pagesPath',pagesPath)
 let outPath;
 if (alternate) {
-  outPath = 'www/altGrids.html';
+  outPath = 'www/altImages.html';
 } else if (byKind) {
   outPath = 'www/byKind.html';
 } else if (byAspect) {
@@ -122,7 +122,7 @@ if (alternate) {
 } else if (square) {
   outPath = 'www/square.html';
 } else {
-  outPath = 'www/grids.html';
+  outPath = 'www/images.html';
 }
 console.log('sectionsPath', sectionsPath,'outPath',outPath);
 
@@ -193,20 +193,27 @@ let pageTop = `
 let headLine = '<p class="introLineLarge"><a style="color:white" href="https://kingdomofpattern.com">Kingdom of Pattern</a></p>';
 let pageIntro;
 if (imKind === 'g') {
-pageIntro = 
-`
-<p class="introLineLarge">Kingdom of Pattern</p>
-<p class="introLineLarge">Theory (<a style="color:white;text-decoration:underline" href="essay.html">here</a>)
- and Practice (below). </p>
+  if (forKOP) {
+    pageIntro = 
+    `
+    <p class="introLineLarge">Kingdom of Pattern</p>
+    <p class="introLineLarge">Theory (<a style="color:white;text-decoration:underline" href="essay.html">here</a>)
+     and Practice (below). </p>
 
-<p  class="introLineSmall">As you will see from <a style="color:white;text-decoration:underline" href="essay.html">theory</a>, the phrase "Kingdom of Pattern" is not a claim to grandeur.</p>
-<p class="introLineSmall">Images by Chris Goad (via JavaScript)</p>
+    <p  class="introLineSmall">As you will see from <a style="color:white;text-decoration:underline" href="essay.html">theory</a>, the phrase "Kingdom of Pattern" is not a claim to grandeur.</p>
+    <p class="introLineSmall">Images by Chris Goad (via JavaScript)</p> 
 
-<p class="introLineSmall">Click <a style="color:white;text-decoration:underline" href="https://www.etsy.com/shop/KingdomOfPattern"> here </a> if  you'd like a print of one of these images for your wall.</p>
+    <p class="introLineSmall">Click <a style="color:white;text-decoration:underline" href="https://www.etsy.com/shop/KingdomOfPattern"> here </a> if  you'd like a print of one of these images for your wall.</p>
 
 
-<p class="introLineSmall">To Expand the Images Below, Click on Them</p>
-`} else if (imKind === 'h') {
+    <p class="introLineSmall">To Expand the Images Below, Click on Them</p>
+  `} else {
+     pageIntro = 
+    `
+    <p class="introLineLarge">PrototypeJungle</p>
+    `;
+  }
+} else if (imKind === 'h') {
 pageIntro = 
 `${headLine}
 <p class="introLineLarge">Horizontal  Posters (3 to 2 ratio of width to height).</p>
@@ -247,7 +254,7 @@ let numPages = 0;
 const thingString = function (order,ix,dir,useThumb,ititle,props) {
 	//console.log('thingString order',order,'ix',ix,'variant',variant,'dir',dir,'useThumb',useThumb,'title',ititle,'likes',likes);
 	debugger;
-  let {variant,likes,posted,category} = props;
+  let {variant,likes,posted,category,sources} = props;
   console.log('POSTED',posted);
 	let spix = ix.split('.');
 	let path = spix[0];
@@ -265,6 +272,9 @@ const thingString = function (order,ix,dir,useThumb,ititle,props) {
 	let thumbsrc = `thumbs/${vpath}.jpg`;
   let localSrc =`www/thumbs/${vpath}.jpg`;
   let localim = fs.existsSync(localSrc);
+  if (ix === 'drift_web') {
+    console.log('IIIIIXXXX',ix);
+  }
   theLocals.push(localim?1:0);
 
   if (!localim) {
@@ -281,6 +291,7 @@ const thingString = function (order,ix,dir,useThumb,ititle,props) {
 	let rs;
 	//let astart = `<a style="color:white" href="page.html?image=${vx}&${pageArg}&${kindArg}&${localArg}">`;
 	let astart = `<a style="color:white" href="page.html?image=${vx}&${pageArg}&${kindArg}">`;
+  console.log('ASTART',astart);
  // let likesStr = likes?`<span style="font-size:10pt">Likes ${likes} ${category}</span><br/>`:'';
   //let propsStr = `<span style="font-size:10pt">Likes ${likes?likes:'none'} Order ${order}${posted?"":" NOT POSTED"} ${category}</span><br/>`;
   let propsStr = `<span style="font-size:10pt">${likes?'Likes '+likes:''} ${posted?"":" NOT POSTED"} ${localim?'Local':''} ${category}</span><br/>`;
@@ -291,13 +302,23 @@ rs = `<div><p class="centered">${titleLink}
 <p class="centered">${astart}<img width="200" src="${thumbsrc}" alt="Image Missing"></a></p></div>
 	`; 
 	} else {
+    let srcUrl = (sources)?`doc/${path}_sources.html`:`${dir}/${path}.${fileExt}`;
+    let sourcenm = `source${sources?'s':''}`;
+
 		console.log('not for KOP');
 rs = `<div><p style="text-align:center"><a href="http://localhost:8081/draw.html?source=/${dir}/${path}.${fileExt}${theImageArg}">${title}</a><br/>
-<a href="${dir}/${path}.${fileExt}">source</a><br/>
+<a href="${srcUrl}">${sourcenm}</a><br/>
 ${propsStr}
 ${astart}<img width="200" src="${thumbsrc}"></a></p></div>
 `;
+/*
+rs = `<div><p style="text-align:center"><a href="http://localhost:8081/draw.html?source=/${dir}/${path}.${fileExt}${theImageArg}">${title}</a><br/>
+<a href="${srcUrl}">${sourcenm}</a><br/>
+${propsStr}
+${astart}<img width="200" src="${thumbsrc}"></a></p></div>
+`;*/
 	}
+  console.log ('rs = ',rs);
 	return rs;
 }
 
@@ -484,7 +505,7 @@ const order2dict = function (order) {
 
 let orderDict = order2dict(imageOrder);
 
-console.log('orderDict',orderDict);
+//console.log('orderDict',orderDict);
 
 const countPages = function (sections) {
 	let rs = 0;

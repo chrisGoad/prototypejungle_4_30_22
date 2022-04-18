@@ -1,20 +1,20 @@
 
-//core.require('/shape/circleWithGrid.js','/shape/rectangle.js','/line/line.js','/random/addLinesShapes0.js',//'/random/addSpacedPoints3.js',
-core.require('/shape/circleWithGrid.js','/shape/rectangle.js','/line/line.js','/gen0/Basics.js','/mlib/lines.js',//'/random/addSpacedPoints3.js',
+//core.require('/shape/circleWithGrid.js','/shape/rectangle.js','/shape/line.js','/random/addLinesShapes0.js',//'/random/addSpacedPoints3.js',
+core.require('/shape/circleWithGrid.js','/shape/rectangle.js','/shape/line.js','/gen0/Basics.js','/mlib/lines.js',//'/random/addSpacedPoints3.js',
   function (elementPP1,elementPP2,elementPP3,item,addMethods) {
 debugger;
-//let item = svg.Element.mk('<g/>');
+//let item = containerShape.mk();
 
 addMethods(item);
 item.setName('lines0_20');
 
 let ht = 400;
-let topParams = {width:1.5*ht,height:ht,backgroundColor:'rgb(200,2,2)', backgroundPadding:0.1*ht};
+let topParams = {width:1.5*ht,height:ht,backFill:'rgb(200,2,2)', backgroundPadding:0.1*ht};
 
 Object.assign(item,topParams);
 
 item.initializeProtos= function () {
-  core.assignPrototypes(this,'elementP1',elementPP1);
+  this.elementP1',elementPP1);
     this.elementP1.fill = 'rgb(140,140,140)';
     this.elementP1.fill = 'red';
     this.elementP1.delta =20;
@@ -22,9 +22,9 @@ item.initializeProtos= function () {
     this.elementP1.circleP.fill = 'black';
     this.elementP1.lineP.stroke = 'red';
     this.elementP1.lineP.stroke = 'white';
-   core.assignPrototypes(this,'elementP2',elementPP2);
+   this.elementP2',elementPP2);
   this.elementP2.fill = 'red';
-  core.assignPrototypes(this,'elementP3',elementPP3);
+  this.elementP3',elementPP3);
   this.elementP3.stroke = 'white';  
   //this.elementP3.stroke = 'black';  
  // this.elementP3.stroke = 'magenta';  
@@ -54,13 +54,13 @@ item.genRandomUnitVector= function () {
 item.initialize = function () {
   debugger;
   this.initializeProtos();
-  //core.root.backgroundColor = 'blue';
- // core.root.backgroundColor = 'rgb(10,10,125)';
-  //core.root.backgroundColor = 'black';
+  //setBackgroundColor( = 'blue';
+ // setBackgroundColor( = 'rgb(10,10,125)';
+  //
   //this.width = 600;
  // this.width = 1200;
   //this.height = 400;
-  this.addBackground();
+  this.addRectangle(this.backFill);
   this.numPoints = 300;//0;
   this.numPoints = 100;
   this.minRadius = 2;
@@ -70,8 +70,8 @@ item.initialize = function () {
   this.shortenBy = 0;
   this.numLines = 1000;
   this.shapeExpansionFactor = 1;
-  let points = this.set("points",core.ArrayNode.mk());
-  let radii = this.set("radii",core.ArrayNode.mk());
+  let points = this.set("points",arrayShape.mk());
+  let radii = this.set("radii",arrayShape.mk());
   this.points.push(Point.mk(0,0));
   this.radii.push(120);
   //this.generatePoints();

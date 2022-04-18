@@ -32,7 +32,7 @@ item.setupRandomizer = function (tp,nm,params) {
 	}
 	let rm = this.initRandomizer();
 	let rnds = this[tp];
-  let rs  = rm.genRandomGrid({timeStep:0,params});
+  let rs  = rm.genRandomGrid(tp,{timeStep:0,params});
 	rnds[nm]  = rs;
 	return rs;
 }
@@ -123,14 +123,14 @@ item.stepRandomizer = function (tp,nm) {
          ifrom = wrnds.interpolateFrom[nm] = wrnds.interpolateTo[nm];
       }
       wrnds[nm] = ifrom;
-	    let rs  = rm.genRandomGrid(rg);
+	    let rs  = rm.genRandomGrid(tp,rg);
       wrnds.interpolateTo[nm] = rs;
     } else {
       this.interpolateBetweenRandomStates(wrnds,nm,fr);
     }
     return;
   }
-	let rs  = rm.genRandomGrid(rg);
+	let rs  = rm.genRandomGrid(tp,rg);
 	wrnds[nm]  = rs;
 	return rs;
 }
